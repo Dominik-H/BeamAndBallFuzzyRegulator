@@ -1,7 +1,10 @@
 #include <SFML/Graphics.hpp>
-#include "fuzzylite/fl/Headers.h"
+#include <Box2D\Box2D.h>
+#include "fl\Headers.h"
 
-int main()
+#include <stdio.h>
+
+int main(int argc, char** argv)
 {
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
