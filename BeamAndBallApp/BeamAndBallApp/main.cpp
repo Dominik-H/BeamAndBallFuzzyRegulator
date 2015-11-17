@@ -10,6 +10,8 @@ int main(int argc, char** argv)
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Default, settings);
 
+	sf::Clock clock;
+
 	// Init Graphics Module that will Init all the other modules
 
 	while (window.isOpen())
@@ -22,6 +24,7 @@ int main(int argc, char** argv)
 		}
 
 		// Update Graphics Module - this updates all the modules
+		// Graphics.Update(clock.restart());
 		// Draw Graphics
 
 	}
