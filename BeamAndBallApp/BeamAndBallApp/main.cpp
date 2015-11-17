@@ -6,9 +6,11 @@
 
 int main(int argc, char** argv)
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Default, settings);
+
+	// Init Graphics Module that will Init all the other modules
 
 	while (window.isOpen())
 	{
@@ -19,9 +21,9 @@ int main(int argc, char** argv)
 				window.close();
 		}
 
-		window.clear();
-		window.draw(shape);
-		window.display();
+		// Update Graphics Module - this updates all the modules
+		// Draw Graphics
+
 	}
 
 	return 0;
