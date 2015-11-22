@@ -1,8 +1,5 @@
-#include <SFML/Graphics.hpp>
-#include <Box2D\Box2D.h>
-#include "fl\Headers.h"
-
-#include <stdio.h>
+#include "pch.h"
+#include "Application.h"
 
 int main(int argc, char** argv)
 {
@@ -13,6 +10,8 @@ int main(int argc, char** argv)
 	sf::Clock clock;
 
 	// Init Graphics Module that will Init all the other modules
+	Application app;
+	app.Init(&window);
 
 	while (window.isOpen())
 	{
@@ -24,9 +23,8 @@ int main(int argc, char** argv)
 		}
 
 		// Update Graphics Module - this updates all the modules
-		// Graphics.Update(clock.restart());
-		// Draw Graphics
-
+		app.Update(clock.restart());
+		app.Draw();
 	}
 
 	return 0;
