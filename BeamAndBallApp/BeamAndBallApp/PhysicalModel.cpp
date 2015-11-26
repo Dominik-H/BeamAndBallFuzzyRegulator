@@ -30,9 +30,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 	// Walls around the world
 		// Ground
 		bDef.position.Set(5.0f, 0.0f); 
-		b2Body* wallBody = world->CreateBody(&bDef);		b2EdgeShape wG;
+		b2Body* wallBody = world->CreateBody(&bDef);
+		b2EdgeShape wG;
 		b2Vec2 v1(0.0f, 0.0f);
-		b2Vec2 v2(10.0f, 0.0f);		wG.Set(v1, v2);
+		b2Vec2 v2(10.0f, 0.0f);
+		wG.Set(v1, v2);
 		wallBody->CreateFixture(&wG, 0.0f);
 		walls.push_back(wallBody);
 
@@ -41,7 +43,8 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef.position.Set(0.0f, 5.0f);
 		wallBody = world->CreateBody(&bDef);
 		v1.Set(0.0f, 0.0f);
-		v2.Set(0.0f, 10.0f);		wL.Set(v1, v2);
+		v2.Set(0.0f, 10.0f);
+		wL.Set(v1, v2);
 		wallBody->CreateFixture(&wL, 0.0f);
 		walls.push_back(wallBody);
 
@@ -50,7 +53,8 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef.position.Set(10.0f, 5.0f);
 		wallBody = world->CreateBody(&bDef);
 		v1.Set(10.0f, 0.0f);
-		v2.Set(10.0f, 10.0f);		wR.Set(v1, v2);
+		v2.Set(10.0f, 10.0f);
+		wR.Set(v1, v2);
 		wallBody->CreateFixture(&wR, 0.0f);
 		walls.push_back(wallBody);
 
@@ -59,7 +63,8 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef.position.Set(5.0f, 10.0f);
 		wallBody = world->CreateBody(&bDef);
 		v1.Set(0.0f, 10.0f);
-		v2.Set(10.0f, 10.0f);		wU.Set(v1, v2);
+		v2.Set(10.0f, 10.0f);
+		wU.Set(v1, v2);
 		wallBody->CreateFixture(&wU, 0.0f);
 		walls.push_back(wallBody);
 
