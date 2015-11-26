@@ -38,7 +38,7 @@ bool Application::Init(sf::RenderWindow* window)
 	return true;
 }
 
-void Application::Update(sf::Time dt)
+void Application::Update(sf::Time dt) 
 {
 	// Update code...
 	totalTime += dt.asMilliseconds();

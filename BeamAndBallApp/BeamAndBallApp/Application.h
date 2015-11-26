@@ -18,7 +18,7 @@ private:
 	std::map<std::string, sf::Shape*> modelObjects;
 	std::map<std::string, sf::Shape*> layoutObjects;
 
-	sf::RenderWindow* window;
+	sf::RenderWindow* window; 
 
 	int totalTime;
 };
