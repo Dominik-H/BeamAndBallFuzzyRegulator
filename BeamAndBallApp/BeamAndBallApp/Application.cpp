@@ -29,7 +29,7 @@ bool Application::Init(sf::RenderWindow* window)
 	// Other Init code...
 	sf::CircleShape* shape = new sf::CircleShape(100.f);
 	shape->setFillColor(sf::Color::Green);
-
+	 
 	modelObjects.push_back(shape);
 
 	return true;
