@@ -103,7 +103,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
 		b2CircleShape ball;
 		ball.m_p.Set(5.0f, 7.6f);
-		ball.m_radius = 1.0f;
+		ball.m_radius = 0.5f;
 		fixDef.shape = &ball;
 		fixDef.density = 0.5f;
 		body->CreateFixture(&fixDef);
