@@ -24,15 +24,29 @@ Application::~Application()
 
 bool Application::Init(sf::RenderWindow* window)
 {
+	physicalWorld.Init(800, 600, 0.1f);
+
 	this->window = window;
 
 	// Other Init code...
-	sf::CircleShape* shape = new sf::CircleShape(100.f);
+	// Ball
+	sf::CircleShape* shape = new sf::CircleShape(30.f);
 	shape->setFillColor(sf::Color::Green);
-	shape->move(DRIFT, 0);
-	modelObjects.insert(std::pair<std::string, sf::Shape*>("circle", shape));
+	shape->move(DRIFT + 280, 240);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("ball", shape));
 
-	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200, 600));
+	// Beam
+	sf::RectangleShape* beam = new sf::RectangleShape(sf::Vector2f(300.0f, 10.0f));
+	beam->setFillColor(sf::Color(139, 69, 19, 255));
+	beam->move(DRIFT + 150, 300);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("beam", beam));
+	// Connnector
+
+	// Triangle
+
+
+	//LeftLeyout
+	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200.0f, 600.0f));
 	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
 
 	return true;
@@ -44,7 +58,7 @@ void Application::Update(sf::Time dt)
 	totalTime += dt.asMilliseconds();
 
 	if (totalTime >= 5000)
-		modelObjects.find("circle")->second->setFillColor(sf::Color::Red);
+		modelObjects.find("ball")->second->setFillColor(sf::Color::Red);
 }
 
 void Application::Draw()
