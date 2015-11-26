@@ -29,7 +29,8 @@ bool Application::Init(sf::RenderWindow* window)
 	// Other Init code...
 	sf::CircleShape* shape = new sf::CircleShape(100.f);
 	shape->setFillColor(sf::Color::Green);
-
+	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200, 600));
+	modelObjects.push_back(rect);
 	modelObjects.push_back(shape);
 
 	return true;
