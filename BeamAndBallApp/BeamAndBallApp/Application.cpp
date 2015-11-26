@@ -77,8 +77,23 @@ void Application::Update(sf::Time dt)
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 
 	// Update code...
-	//modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	//modelObjects.find("ball")->second->setPosition(bodies->find("ball")->second->GetTransform().p.x * 60, bodies->find("ball")->second->GetTransform().p.y * 60);
+	// Ball
+	modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	modelObjects.find("ball")->second->setPosition(bodies->find("ball")->second->GetTransform().p.x * 60, bodies->find("ball")->second->GetTransform().p.y * 60);
+	
+	// Beam
+	modelObjects.find("beam")->second->setRotation(bodies->find("beam")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	modelObjects.find("beam")->second->setPosition(bodies->find("beam")->second->GetTransform().p.x * 60, bodies->find("beam")->second->GetTransform().p.y * 60);
+
+	// Connector
+	modelObjects.find("connector")->second->setRotation(bodies->find("connector")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	modelObjects.find("connector")->second->setPosition(bodies->find("connector")->second->GetTransform().p.x * 60, bodies->find("connector")->second->GetTransform().p.y * 60);
+
+	// Servo
+	modelObjects.find("servo")->second->setRotation(bodies->find("servo")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	modelObjects.find("servo")->second->setPosition(bodies->find("servo")->second->GetTransform().p.x * 60, bodies->find("servo")->second->GetTransform().p.y * 60);
+
+
 	totalTime += dt.asMilliseconds();
 
 	if (totalTime >= 5000)
