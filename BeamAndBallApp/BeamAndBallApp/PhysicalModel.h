@@ -14,6 +14,10 @@ public:
 	void SetServoTimeDelay(float servoTimeDelay);
 	void SetGravity(float gravityAcceleration);
 
+	std::map<std::string, b2Body*>* GetBodies() {
+		return &bAndBBodies;
+	}
+
 private:
 	bool ReInit();
 

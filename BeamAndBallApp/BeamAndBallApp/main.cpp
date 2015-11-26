@@ -4,7 +4,7 @@
 int main(int argc, char** argv)
 {
 	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
+	settings.antialiasingLevel = 16;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Default, settings);
 
 	sf::Clock clock;

@@ -2,6 +2,7 @@
 #include "Application.h"
 #define DRIFT 200
 
+
 Application::Application()
 	:window(0)
 {
@@ -28,24 +29,36 @@ bool Application::Init(sf::RenderWindow* window)
 
 	this->window = window;
 
-	// Other Init code...
 	// Ball
 	sf::CircleShape* shape = new sf::CircleShape(30.f);
 	shape->setFillColor(sf::Color::Green);
-	shape->move(DRIFT + 280, 240);
+	shape->move(DRIFT + 280, 150);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("ball", shape));
 
 	// Beam
-	sf::RectangleShape* beam = new sf::RectangleShape(sf::Vector2f(300.0f, 10.0f));
+	sf::RectangleShape* beam = new sf::RectangleShape(sf::Vector2f(300.0f, 6.0f));
 	beam->setFillColor(sf::Color(139, 69, 19, 255));
-	beam->move(DRIFT + 150, 300);
+	beam->move(DRIFT + 150, 210);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("beam", beam));
+
 	// Connnector
+	sf::RectangleShape* connector = new sf::RectangleShape(sf::Vector2f(6.0f, 240.0f));
+	connector->setFillColor(sf::Color(100, 100, 100, 255));
+	connector->move(DRIFT + 450, 216);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("connector", connector));
 
 	// Triangle
+	sf::CircleShape* triangle = new sf::CircleShape(103.923f,3);
+	triangle->setFillColor(sf::Color::Blue);
+	triangle->move(DRIFT + 46, 216);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("triangle", triangle));
+	// Servo
+	sf::CircleShape* servo = new sf::CircleShape(60.f);
+	servo->setFillColor(sf::Color::Yellow);
+	servo->move(DRIFT + 330, 276);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("servo", servo));
 
-
-	//LeftLeyout
+	//LeftLayout
 	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200.0f, 600.0f));
 	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
 
@@ -54,6 +67,9 @@ bool Application::Init(sf::RenderWindow* window)
 
 void Application::Update(sf::Time dt) 
 {
+	physicalWorld.Update(dt.asMilliseconds());
+	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
+
 	// Update code...
 	totalTime += dt.asMilliseconds();
 
