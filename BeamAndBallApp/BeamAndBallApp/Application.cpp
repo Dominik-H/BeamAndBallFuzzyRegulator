@@ -49,7 +49,7 @@ bool Application::Init(sf::RenderWindow* window)
 
 	// Triangle
 	sf::CircleShape* triangle = new sf::CircleShape(103.923f,3);
-	triangle->setFillColor(sf::Color::Blue);
+	triangle->setFillColor(sf::Color::Red);
 	triangle->move(DRIFT + 46, 216);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("triangle", triangle));
 	// Servo
@@ -58,7 +58,13 @@ bool Application::Init(sf::RenderWindow* window)
 	servo->move(DRIFT + 330, 276);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("servo", servo));
 
-	//LeftLayout
+	// Box
+	sf::RectangleShape* box = new sf::RectangleShape(sf::Vector2f(180.0f, 190.0f));
+	box->setFillColor(sf::Color::Blue);
+	box->move(DRIFT + 60, 372);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("box", box));
+
+	// LeftLayout
 	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200.0f, 600.0f));
 	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
 
@@ -71,6 +77,8 @@ void Application::Update(sf::Time dt)
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 
 	// Update code...
+	//modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	//modelObjects.find("ball")->second->setPosition(bodies->find("ball")->second->GetTransform().p.x * 60, bodies->find("ball")->second->GetTransform().p.y * 60);
 	totalTime += dt.asMilliseconds();
 
 	if (totalTime >= 5000)
