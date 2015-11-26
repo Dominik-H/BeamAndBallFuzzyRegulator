@@ -86,8 +86,8 @@ void Application::Update(sf::Time dt)
 	modelObjects.find("beam")->second->setPosition(bodies->find("beam")->second->GetTransform().p.x * 60, bodies->find("beam")->second->GetTransform().p.y * 60);
 
 	// Connector
-	modelObjects.find("connector")->second->setRotation(bodies->find("connector")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	modelObjects.find("connector")->second->setPosition(bodies->find("connector")->second->GetTransform().p.x * 60, bodies->find("connector")->second->GetTransform().p.y * 60);
+	modelObjects.find("connector")->second->setRotation(bodies->find("conn")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
+	modelObjects.find("connector")->second->setPosition(bodies->find("conn")->second->GetTransform().p.x * 60, bodies->find("conn")->second->GetTransform().p.y * 60);
 
 	// Servo
 	modelObjects.find("servo")->second->setRotation(bodies->find("servo")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
