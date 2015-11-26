@@ -78,20 +78,20 @@ void Application::Update(sf::Time dt)
 
 	// Update code...
 	// Ball
-	modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	modelObjects.find("ball")->second->setPosition(bodies->find("ball")->second->GetTransform().p.x * 60, bodies->find("ball")->second->GetTransform().p.y * 60);
+	modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetAngle() * 180 / b2_pi);
+	modelObjects.find("ball")->second->setPosition(bodies->find("ball")->second->GetPosition().x * 60, bodies->find("ball")->second->GetPosition().y * 60);
 	
 	// Beam
 	modelObjects.find("beam")->second->setRotation(bodies->find("beam")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	modelObjects.find("beam")->second->setPosition(bodies->find("beam")->second->GetTransform().p.x * 60, bodies->find("beam")->second->GetTransform().p.y * 60);
+	modelObjects.find("beam")->second->setPosition(bodies->find("beam")->second->GetPosition().x * 60, bodies->find("beam")->second->GetPosition().y * 60);
 
 	// Connector
 	modelObjects.find("connector")->second->setRotation(bodies->find("conn")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	modelObjects.find("connector")->second->setPosition(bodies->find("conn")->second->GetTransform().p.x * 60, bodies->find("conn")->second->GetTransform().p.y * 60);
+	modelObjects.find("connector")->second->setPosition(bodies->find("conn")->second->GetPosition().x * 60, bodies->find("conn")->second->GetPosition().y * 60);
 
 	// Servo
 	modelObjects.find("servo")->second->setRotation(bodies->find("servo")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
-	modelObjects.find("servo")->second->setPosition(bodies->find("servo")->second->GetTransform().p.x * 60, bodies->find("servo")->second->GetTransform().p.y * 60);
+	modelObjects.find("servo")->second->setPosition(bodies->find("servo")->second->GetPosition().x * 60, bodies->find("servo")->second->GetPosition().y * 60);
 
 
 	totalTime += dt.asMilliseconds();
