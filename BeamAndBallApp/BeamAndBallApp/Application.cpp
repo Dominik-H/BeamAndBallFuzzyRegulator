@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Application.h"
-
+#define DRIFT 200
 
 Application::Application()
 	:window(0)
@@ -30,6 +30,7 @@ bool Application::Init(sf::RenderWindow* window)
 	sf::CircleShape* shape = new sf::CircleShape(100.f);
 	shape->setFillColor(sf::Color::Green);
 	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200, 600));
+	shape->move(DRIFT, 0);
 	modelObjects.push_back(rect);
 	modelObjects.push_back(shape);
 
