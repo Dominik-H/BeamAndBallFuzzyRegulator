@@ -15,8 +15,8 @@ public:
 
 private:
 	PhysicalModel physicalWorld;
-	std::vector<sf::Shape*> modelObjects;
-	std::vector<sf::Shape*> layoutObjects;
+	std::map<std::string, sf::Shape*> modelObjects;
+	std::map<std::string, sf::Shape*> layoutObjects;
 
 	sf::RenderWindow* window;
 

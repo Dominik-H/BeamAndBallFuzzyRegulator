@@ -11,14 +11,14 @@ Application::Application()
 
 Application::~Application()
 {
-	for (int i = modelObjects.size() - 1; i >= 0; --i)
+	for (auto i = modelObjects.begin(); i != modelObjects.end(); ++i)
 	{
-		delete modelObjects[i];
+		delete i->second;
 	}
 
-	for (int i = layoutObjects.size() - 1; i >= 0; --i)
+	for (auto i = layoutObjects.begin(); i != layoutObjects.end(); ++i)
 	{
-		delete layoutObjects[i];
+		delete i->second;
 	}
 }
 
@@ -29,10 +29,11 @@ bool Application::Init(sf::RenderWindow* window)
 	// Other Init code...
 	sf::CircleShape* shape = new sf::CircleShape(100.f);
 	shape->setFillColor(sf::Color::Green);
-	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200, 600));
 	shape->move(DRIFT, 0);
-	modelObjects.push_back(rect);
-	modelObjects.push_back(shape);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("circle", shape));
+
+	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200, 600));
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
 
 	return true;
 }
@@ -43,7 +44,7 @@ void Application::Update(sf::Time dt)
 	totalTime += dt.asMilliseconds();
 
 	if (totalTime >= 5000)
-		modelObjects[0]->setFillColor(sf::Color::Red);
+		modelObjects.find("circle")->second->setFillColor(sf::Color::Red);
 }
 
 void Application::Draw()
@@ -51,14 +52,14 @@ void Application::Draw()
 	// Draw code ...
 	window->clear();
 
-	for (uint32 i = 0; i < modelObjects.size(); ++i)
+	for (auto i = modelObjects.begin(); i != modelObjects.end(); ++i)
 	{
-		window->draw(*(modelObjects[i]));
+		window->draw(*(i->second));
 	}
 
-	for (uint32 i = 0; i < layoutObjects.size(); ++i)
+	for (auto i = layoutObjects.begin(); i != layoutObjects.end(); ++i)
 	{
-		window->draw(*(layoutObjects[i]));
+		window->draw(*(i->second));
 	}
 
 	window->display();
