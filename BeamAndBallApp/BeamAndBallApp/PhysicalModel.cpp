@@ -9,15 +9,18 @@ PhysicalModel::PhysicalModel()
 
 PhysicalModel::~PhysicalModel()
 {
-	// Delete Joints
-	world->DestroyJoint(joint1);
-	world->DestroyJoint(joint2);
-	world->DestroyJoint(joint3);
-	world->DestroyJoint(joint31);
-	world->DestroyJoint(joint32);
+	if (joint1)
+	{
+		// Delete Joints
+		world->DestroyJoint(joint1);
+		world->DestroyJoint(joint2);
+		world->DestroyJoint(joint3);
+		world->DestroyJoint(joint31);
+		world->DestroyJoint(joint32);
 
-	// Delete World
-	delete world;
+		// Delete World
+		delete world;
+	}
 }
 
 bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
