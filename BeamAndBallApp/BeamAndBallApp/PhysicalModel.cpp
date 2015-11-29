@@ -73,7 +73,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 	// Servo, Beam, Ball, Connection Beam - Default Values
 		// Beam
-		bDef.position.Set(5.0f, 6.55f);
+		bDef.position.Set(5.0f, 6.45f);
 		bDef.type = b2_dynamicBody;
 		b2Body* body = world->CreateBody(&bDef);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("beam", body));
@@ -85,38 +85,38 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body->CreateFixture(&fixDef);
 
 		// Connector
-		bDef.position.Set(7.55f, 4.5f);
+		bDef.position.Set(7.55f, 4.4f);
 		bDef.type = b2_dynamicBody;
 		body = world->CreateBody(&bDef);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("conn", body));
 		b2PolygonShape conn;
-		conn.SetAsBox(0.05f, 2.0f);
+		conn.SetAsBox(0.05f, 4.0f);
 		fixDef.shape = &conn;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
 
 		// Ball
-		bDef.position.Set(5.0f, 7.6f);
+		bDef.position.Set(5.166f, 7.0f);
 		bDef.type = b2_dynamicBody;
 		bDef.bullet = true;
 		body = world->CreateBody(&bDef);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
 		b2CircleShape ball;
-		ball.m_p.Set(5.0f, 7.6f);
-		ball.m_radius = 1.0f;
+		ball.m_p.Set(5.166f, 7.0f);
+		ball.m_radius = 0.5f;
 		fixDef.shape = &ball;
 		fixDef.density = 0.5f;
 		body->CreateFixture(&fixDef);
 
 		// Servo
-		bDef.position.Set(6.5f, 4.5f);
+		bDef.position.Set(6.5f, 4.4f);
 		bDef.type = b2_dynamicBody;
 		bDef.bullet = false;
 		bDef.gravityScale = 0.0f;
 		body = world->CreateBody(&bDef);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("servo", body));
 		b2CircleShape servo;
-		servo.m_p.Set(6.5f, 4.5f);
+		servo.m_p.Set(6.5f, 4.4f);
 		servo.m_radius = 1.0f;
 		fixDef.shape = &servo;
 		fixDef.density = 4.0f;
