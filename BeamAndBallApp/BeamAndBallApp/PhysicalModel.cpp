@@ -14,7 +14,6 @@ PhysicalModel::~PhysicalModel()
 		// Delete Joints
 		world->DestroyJoint(joint1);
 		world->DestroyJoint(joint2);
-		//world->DestroyJoint(joint3);
 		world->DestroyJoint(joint31);
 		world->DestroyJoint(joint32);
 
@@ -95,14 +94,14 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 		// Connector
 		b2BodyDef bDef6;
-		bDef6.position.Set(7.55f, 4.4f);
+		bDef6.position.Set(7.55f, 5.4f);
 		bDef6.type = b2_dynamicBody;
 		bDef6.allowSleep = false;
 		bDef6.gravityScale = 0.0f;
 		body = world->CreateBody(&bDef6);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("conn", body));
 		b2PolygonShape* conn = new b2PolygonShape();
-		conn->SetAsBox(0.05f, 2.0f);
+		conn->SetAsBox(0.05f, 1.0f);
 		fixDef.shape = conn;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
@@ -124,7 +123,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 		// Servo
 		b2BodyDef bDef8;
-		bDef8.position.Set(6.7f, 4.4f);
+		bDef8.position.Set(6.55f, 4.4f);
 		bDef8.allowSleep = false;
 		bDef8.type = b2_dynamicBody;
 		bDef8.bullet = false;
@@ -180,30 +179,20 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		joint2Def.collideConnected = false;
 		joint2 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&joint2Def));
 
-		// Joint #3 - Connector <-> Servo
+		// Joint #3A - Connector <-> Servo
 		b2RevoluteJointDef jointADef;
 		jointADef.Initialize(bAndBBodies.find("servo")->second, bAndBBodies.find("conn")->second, b2Vec2(7.55f, 4.4f));
-		//jointADef.enableMotor = true;
 		jointADef.collideConnected = false;
 		joint31 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointADef));
-
+		
+		// Joint #3B - Pin <-> Servo
 		b2RevoluteJointDef jointBDef;
-		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.7f, 4.4f));
+		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.55f, 4.4f));
+		jointBDef.enableMotor = true;
+		jointBDef.motorSpeed = -5;
+		jointBDef.maxMotorTorque = 3;
 		jointBDef.collideConnected = false;
 		joint32 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointBDef));
-
-		/*b2PrismaticJointDef jointBDef;
-		jointBDef.Initialize(bAndBBodies.find("conn")->second, walls[0], b2Vec2(7.55f, 4.4f), b2Vec2(0.0f, 1.0f));
-		jointBDef.collideConnected = false;
-		joint32 = reinterpret_cast<b2PrismaticJoint*>(world->CreateJoint(&jointBDef));
-
-		b2GearJointDef joint3Def;
-		joint3Def.bodyA = bAndBBodies.find("conn")->second;
-		joint3Def.bodyB = bAndBBodies.find("servo")->second;
-		joint3Def.joint1 = joint31;
-		joint3Def.joint2 = joint32;
-		joint3Def.ratio = 2.0f * b2_pi / 1.05f;
-		joint3 = reinterpret_cast<b2GearJoint*>(world->CreateJoint(&joint3Def));*/
 
 	initialized = true;
 
@@ -219,9 +208,10 @@ void PhysicalModel::Update(float dt)
 
 	servoTimeDelay += dt;
 
-	if (servoTimeDelay >= 5.0f)
+	if (servoTimeDelay >= 3.0f)
 	{
-		//bAndBBodies.find("servo")->second->SetAngularVelocity(20.0f);
+		joint32->SetMotorSpeed(-joint32->GetMotorSpeed());
+		joint32->SetMaxMotorTorque(0);
 		servoTimeDelay = 0.0f;
 	}
 	
