@@ -14,9 +14,9 @@ PhysicalModel::~PhysicalModel()
 		// Delete Joints
 		world->DestroyJoint(joint1);
 		world->DestroyJoint(joint2);
-		world->DestroyJoint(joint3);
+		//world->DestroyJoint(joint3);
 		world->DestroyJoint(joint31);
-		world->DestroyJoint(joint32);
+		//world->DestroyJoint(joint32);
 
 		// Delete World
 		delete world;
@@ -31,7 +31,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 	// Walls around the world
 		// Ground
 		b2BodyDef bDef;
-		bDef.position.Set(5.0f, 0.0f);
+		bDef.position.Set(0.0f, 0.0f);
 		bDef.allowSleep = false;
 		b2Body* wallBody = world->CreateBody(&bDef);
 		b2EdgeShape* wG = new b2EdgeShape();
@@ -44,7 +44,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		// Left
 		b2BodyDef bDef2;
 		b2EdgeShape* wL = new b2EdgeShape();
-		bDef2.position.Set(0.0f, 5.0f);
+		bDef2.position.Set(0.0f, 0.0f);
 		bDef2.allowSleep = false;
 		wallBody = world->CreateBody(&bDef2);
 		v1.Set(0.0f, 0.0f);
@@ -56,7 +56,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		// Right
 		b2BodyDef bDef3;
 		b2EdgeShape* wR = new b2EdgeShape();
-		bDef3.position.Set(10.0f, 5.0f);
+		bDef3.position.Set(0.0f, 0.0f);
 		bDef3.allowSleep = false;
 		wallBody = world->CreateBody(&bDef3);
 		v1.Set(10.0f, 0.0f);
@@ -68,7 +68,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		// Up
 		b2BodyDef bDef4;
 		b2EdgeShape* wU = new b2EdgeShape();
-		bDef4.position.Set(5.0f, 10.0f);
+		bDef4.position.Set(0.0f, 0.0f);
 		bDef4.allowSleep = false;
 		wallBody = world->CreateBody(&bDef4);
 		v1.Set(0.0f, 10.0f);
@@ -83,6 +83,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef5.position.Set(5.0f, 6.45f);
 		bDef5.type = b2_dynamicBody;
 		bDef5.allowSleep = false;
+		bDef5.gravityScale = 0.0f;
 		b2Body* body = world->CreateBody(&bDef5);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("beam", body));
 		b2PolygonShape* beam = new b2PolygonShape();
@@ -97,10 +98,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef6.position.Set(7.55f, 4.4f);
 		bDef6.type = b2_dynamicBody;
 		bDef6.allowSleep = false;
+		bDef6.gravityScale = 0.0f;
 		body = world->CreateBody(&bDef6);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("conn", body));
 		b2PolygonShape* conn = new b2PolygonShape();
-		conn->SetAsBox(0.05f, 4.0f);
+		conn->SetAsBox(0.05f, 2.0f);
 		fixDef.shape = conn;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
@@ -118,11 +120,12 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		ball->m_radius = 0.5f;
 		fixDef.shape = ball;
 		fixDef.density = 0.5f;
+		fixDef.restitution = 0.0f;
 		body->CreateFixture(&fixDef);
 
 		// Servo
 		b2BodyDef bDef8;
-		bDef8.position.Set(6.5f, 4.4f);
+		bDef8.position.Set(6.7f, 4.4f);
 		bDef8.allowSleep = false;
 		bDef8.type = b2_dynamicBody;
 		bDef8.bullet = false;
@@ -150,14 +153,14 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		points[1].Set(1.0f, 3.9f);
 		points[2].Set(4.0f, 3.9f);
 		triangle.Set(points, 3);
-		fixDef.shape = &servo;
+		fixDef.shape = &triangle;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
 
 	// Joints ...
 		// Joint #1 - Triangle <-> Beam
 		b2RevoluteJointDef joint1Def;
-		joint1Def.Initialize(bAndBBodies.find("triangle")->second, bAndBBodies.find("beam")->second, b2Vec2(2.5f, 6.4f));
+		joint1Def.Initialize(bAndBBodies.find("triangle")->second, bAndBBodies.find("beam")->second, b2Vec2(2.5f, 6.5f));
 		joint1Def.collideConnected = false;
 		joint1 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&joint1Def));
 
@@ -169,11 +172,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 		// Joint #3 - Connector <-> Servo
 		b2RevoluteJointDef jointADef;
-		jointADef.Initialize(bAndBBodies.find("servo")->second, walls[0], b2Vec2(6.5f, 4.4f));
+		jointADef.Initialize(bAndBBodies.find("servo")->second, bAndBBodies.find("conn")->second, b2Vec2(6.7f, 4.4f));
 		jointADef.collideConnected = false;
 		joint31 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointADef));
 
-		b2PrismaticJointDef jointBDef;
+		/*b2PrismaticJointDef jointBDef;
 		jointBDef.Initialize(bAndBBodies.find("conn")->second, walls[0], b2Vec2(7.55f, 4.4f), b2Vec2(0.0f, 1.0f));
 		jointBDef.collideConnected = false;
 		joint32 = reinterpret_cast<b2PrismaticJoint*>(world->CreateJoint(&jointBDef));
@@ -184,9 +187,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		joint3Def.joint1 = joint31;
 		joint3Def.joint2 = joint32;
 		joint3Def.ratio = 2.0f * b2_pi / 1.05f;
-		joint3 = reinterpret_cast<b2GearJoint*>(world->CreateJoint(&joint3Def));
+		joint3 = reinterpret_cast<b2GearJoint*>(world->CreateJoint(&joint3Def));*/
 
 	initialized = true;
+
+	this->servoTimeDelay = 0.0f;
 
 	return true;
 }
@@ -195,7 +200,16 @@ void PhysicalModel::Update(float dt)
 {
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
-	world->Step(dt, velocityIterations, positionIterations);
+
+	servoTimeDelay += dt;
+
+	if (servoTimeDelay >= 5.0f)
+	{
+		bAndBBodies.find("servo")->second->SetAngularVelocity(20.0f);
+		servoTimeDelay = 0.0f;
+	}
+	
+	world->Step(1.0f/60.0f, velocityIterations, positionIterations);
 }
 
 void PhysicalModel::SetServoTimeDelay(float servoTimeDelay)

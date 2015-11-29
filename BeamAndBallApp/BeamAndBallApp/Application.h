@@ -19,6 +19,7 @@ private:
 	std::map<std::string, sf::Shape*> layoutObjects;
 
 	sf::RenderWindow* window; 
+	SFMLDebugDraw* dDraw;
 
 	int totalTime;
 };

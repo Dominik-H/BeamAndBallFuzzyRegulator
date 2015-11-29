@@ -25,10 +25,14 @@ Application::~Application()
 
 bool Application::Init(sf::RenderWindow* window)
 {
+	this->window = window;
+	dDraw = new SFMLDebugDraw(*window);
+
 	physicalWorld.Init(800, 600, 0.1f);
 
-	this->window = window;
-
+	physicalWorld.GetWorld()->SetDebugDraw(dDraw);
+	dDraw->SetFlags(b2Draw::e_shapeBit);
+	/*
 	// Ball
 	sf::CircleShape* shape = new sf::CircleShape(30.f);
 	shape->setFillColor(sf::Color::Green);
@@ -67,7 +71,7 @@ bool Application::Init(sf::RenderWindow* window)
 
 	// LeftLayout
 	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200.0f, 600.0f));
-	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));*/
 
 	return true;
 }
@@ -76,7 +80,7 @@ void Application::Update(sf::Time dt)
 {
 	physicalWorld.Update(dt.asSeconds());
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
-
+	/*
 	// Update code...
 	// Ball
 	modelObjects.find("ball")->second->setRotation(bodies->find("ball")->second->GetAngle() * 180 / b2_pi);
@@ -97,17 +101,19 @@ void Application::Update(sf::Time dt)
 	modelObjects.find("servo")->second->setRotation(bodies->find("servo")->second->GetTransform().q.GetAngle() * 180 / b2_pi);
 	// 60 - radius ... in pixels
 	modelObjects.find("servo")->second->setPosition(DRIFT - 60 + bodies->find("servo")->second->GetPosition().x * 60, window->getSize().y - 60 - bodies->find("servo")->second->GetPosition().y * 60);
-		
+		*/
 	totalTime += dt.asMilliseconds();
-
+	/*
 	if (totalTime >= 5000)
-		modelObjects.find("ball")->second->setFillColor(sf::Color::Red);
+		modelObjects.find("ball")->second->setFillColor(sf::Color::Red);*/
 }
 
 void Application::Draw()
 {
 	// Draw code ...
 	window->clear();
+
+	physicalWorld.GetWorld()->DrawDebugData();
 
 	for (auto i = modelObjects.begin(); i != modelObjects.end(); ++i)
 	{

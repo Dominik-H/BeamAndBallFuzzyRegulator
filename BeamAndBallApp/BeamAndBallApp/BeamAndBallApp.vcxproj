@@ -88,12 +88,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PhysicalModel.cpp" />
+    <ClCompile Include="SFMLDebugDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="FuzzyRegulator.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicalModel.h" />
+    <ClInclude Include="SFMLDebugDraw.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

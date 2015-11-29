@@ -18,6 +18,10 @@ public:
 		return &bAndBBodies;
 	}
 
+	b2World* GetWorld() {
+		return world;
+	}
+
 private:
 	bool ReInit();
 
