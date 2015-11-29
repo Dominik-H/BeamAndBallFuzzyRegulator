@@ -16,7 +16,7 @@ PhysicalModel::~PhysicalModel()
 		world->DestroyJoint(joint2);
 		//world->DestroyJoint(joint3);
 		world->DestroyJoint(joint31);
-		//world->DestroyJoint(joint32);
+		world->DestroyJoint(joint32);
 
 		// Delete World
 		delete world;
@@ -116,7 +116,6 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body = world->CreateBody(&bDef7);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
 		b2CircleShape* ball = new b2CircleShape();
-		//ball->m_p.Set(5.166f, 7.0f);
 		ball->m_radius = 0.5f;
 		fixDef.shape = ball;
 		fixDef.density = 0.5f;
@@ -133,9 +132,20 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body = world->CreateBody(&bDef8);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("servo", body));
 		b2CircleShape servo;
-		//servo.m_p.Set(6.5f, 4.4f);
 		servo.m_radius = 1.0f;
 		fixDef.shape = &servo;
+		fixDef.density = 4.0f;
+		body->CreateFixture(&fixDef);
+
+		// ServoPin
+		b2BodyDef bDef10;
+		bDef10.position.Set(6.7f, 4.4f);
+		bDef10.type = b2_staticBody;
+		body = world->CreateBody(&bDef10);
+		bAndBBodies.insert(std::pair<std::string, b2Body*>("servoPin", body));
+		b2CircleShape servoPin;
+		servo.m_radius = 0.0f;
+		fixDef.shape = &servoPin;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
 
@@ -172,9 +182,15 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 		// Joint #3 - Connector <-> Servo
 		b2RevoluteJointDef jointADef;
-		jointADef.Initialize(bAndBBodies.find("servo")->second, bAndBBodies.find("conn")->second, b2Vec2(6.7f, 4.4f));
+		jointADef.Initialize(bAndBBodies.find("servo")->second, bAndBBodies.find("conn")->second, b2Vec2(7.55f, 4.4f));
+		//jointADef.enableMotor = true;
 		jointADef.collideConnected = false;
 		joint31 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointADef));
+
+		b2RevoluteJointDef jointBDef;
+		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.7f, 4.4f));
+		jointBDef.collideConnected = false;
+		joint32 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointBDef));
 
 		/*b2PrismaticJointDef jointBDef;
 		jointBDef.Initialize(bAndBBodies.find("conn")->second, walls[0], b2Vec2(7.55f, 4.4f), b2Vec2(0.0f, 1.0f));
@@ -205,7 +221,7 @@ void PhysicalModel::Update(float dt)
 
 	if (servoTimeDelay >= 5.0f)
 	{
-		bAndBBodies.find("servo")->second->SetAngularVelocity(20.0f);
+		//bAndBBodies.find("servo")->second->SetAngularVelocity(20.0f);
 		servoTimeDelay = 0.0f;
 	}
 	

@@ -38,7 +38,7 @@ private:
 	b2RevoluteJoint* joint1;
 	b2RevoluteJoint* joint2; 
 	b2RevoluteJoint* joint31;
-	b2PrismaticJoint* joint32;
+	b2RevoluteJoint* joint32;
 	b2GearJoint* joint3;
 };
 
