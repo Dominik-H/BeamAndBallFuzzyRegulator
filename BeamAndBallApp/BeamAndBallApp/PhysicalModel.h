@@ -10,7 +10,7 @@ public:
 	~PhysicalModel();
 
 	bool Init(int width, int height, float servoTimeDelay);
-	void Update(int dt);
+	void Update(float dt);
 	void SetServoTimeDelay(float servoTimeDelay);
 	void SetGravity(float gravityAcceleration);
 

@@ -34,47 +34,47 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef.position.Set(5.0f, 0.0f);
 		bDef.allowSleep = false;
 		b2Body* wallBody = world->CreateBody(&bDef);
-		b2EdgeShape wG;
+		b2EdgeShape* wG = new b2EdgeShape();
 		b2Vec2 v1(0.0f, 0.0f);
 		b2Vec2 v2(10.0f, 0.0f);
-		wG.Set(v1, v2);
-		wallBody->CreateFixture(&wG, 0.0f);
+		wG->Set(v1, v2);
+		wallBody->CreateFixture(wG, 1.0f);
 		walls.push_back(wallBody);
 
 		// Left
 		b2BodyDef bDef2;
-		b2EdgeShape wL;
+		b2EdgeShape* wL = new b2EdgeShape();
 		bDef2.position.Set(0.0f, 5.0f);
 		bDef2.allowSleep = false;
 		wallBody = world->CreateBody(&bDef2);
 		v1.Set(0.0f, 0.0f);
 		v2.Set(0.0f, 10.0f);
-		wL.Set(v1, v2);
-		wallBody->CreateFixture(&wL, 0.0f);
+		wL->Set(v1, v2);
+		wallBody->CreateFixture(wL, 1.0f);
 		walls.push_back(wallBody);
 
 		// Right
 		b2BodyDef bDef3;
-		b2EdgeShape wR;
+		b2EdgeShape* wR = new b2EdgeShape();
 		bDef3.position.Set(10.0f, 5.0f);
 		bDef3.allowSleep = false;
 		wallBody = world->CreateBody(&bDef3);
 		v1.Set(10.0f, 0.0f);
 		v2.Set(10.0f, 10.0f);
-		wR.Set(v1, v2);
-		wallBody->CreateFixture(&wR, 0.0f);
+		wR->Set(v1, v2);
+		wallBody->CreateFixture(wR, 1.0f);
 		walls.push_back(wallBody);
 
 		// Up
 		b2BodyDef bDef4;
-		b2EdgeShape wU;
+		b2EdgeShape* wU = new b2EdgeShape();
 		bDef4.position.Set(5.0f, 10.0f);
 		bDef4.allowSleep = false;
 		wallBody = world->CreateBody(&bDef4);
 		v1.Set(0.0f, 10.0f);
 		v2.Set(10.0f, 10.0f);
-		wU.Set(v1, v2);
-		wallBody->CreateFixture(&wU, 0.0f);
+		wU->Set(v1, v2);
+		wallBody->CreateFixture(wU, 0.0f);
 		walls.push_back(wallBody);
 
 	// Servo, Beam, Ball, Connection Beam - Default Values
@@ -85,10 +85,10 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef5.allowSleep = false;
 		b2Body* body = world->CreateBody(&bDef5);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("beam", body));
-		b2PolygonShape beam;
-		beam.SetAsBox(2.5f, 0.05f);
+		b2PolygonShape* beam = new b2PolygonShape();
+		beam->SetAsBox(2.5f, 0.05f);
 		b2FixtureDef fixDef;
-		fixDef.shape = &beam;
+		fixDef.shape = beam;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
 
@@ -99,24 +99,24 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		bDef6.allowSleep = false;
 		body = world->CreateBody(&bDef6);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("conn", body));
-		b2PolygonShape conn;
-		conn.SetAsBox(0.05f, 4.0f);
-		fixDef.shape = &conn;
+		b2PolygonShape* conn = new b2PolygonShape();
+		conn->SetAsBox(0.05f, 4.0f);
+		fixDef.shape = conn;
 		fixDef.density = 4.0f;
 		body->CreateFixture(&fixDef);
 
 		// Ball
 		b2BodyDef bDef7;
-		bDef7.position.Set(5.166f, 7.0f);
+		bDef7.position.Set(5.166f, 9.0f);
 		bDef7.type = b2_dynamicBody;
 		bDef7.allowSleep = false;
 		bDef7.bullet = true;
 		body = world->CreateBody(&bDef7);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
-		b2CircleShape ball;
-		ball.m_p.Set(5.166f, 7.0f);
-		ball.m_radius = 0.5f;
-		fixDef.shape = &ball;
+		b2CircleShape* ball = new b2CircleShape();
+		//ball->m_p.Set(5.166f, 7.0f);
+		ball->m_radius = 0.5f;
+		fixDef.shape = ball;
 		fixDef.density = 0.5f;
 		body->CreateFixture(&fixDef);
 
@@ -130,7 +130,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body = world->CreateBody(&bDef8);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("servo", body));
 		b2CircleShape servo;
-		servo.m_p.Set(6.5f, 4.4f);
+		//servo.m_p.Set(6.5f, 4.4f);
 		servo.m_radius = 1.0f;
 		fixDef.shape = &servo;
 		fixDef.density = 4.0f;
@@ -157,24 +157,24 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 	// Joints ...
 		// Joint #1 - Triangle <-> Beam
 		b2RevoluteJointDef joint1Def;
-		joint1Def.Initialize(bAndBBodies.find("triangle")->second, bAndBBodies.find("beam")->second, b2Vec2(2.5f, 6.5f));
+		joint1Def.Initialize(bAndBBodies.find("triangle")->second, bAndBBodies.find("beam")->second, b2Vec2(2.5f, 6.4f));
 		joint1Def.collideConnected = false;
 		joint1 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&joint1Def));
 
 		// Joint #2 - Beam <-> Connector
 		b2RevoluteJointDef joint2Def;
-		joint2Def.Initialize(bAndBBodies.find("beam")->second, bAndBBodies.find("conn")->second, b2Vec2(7.5f, 6.5f));
+		joint2Def.Initialize(bAndBBodies.find("beam")->second, bAndBBodies.find("conn")->second, b2Vec2(7.5f, 6.4f));
 		joint2Def.collideConnected = false;
 		joint2 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&joint2Def));
 
 		// Joint #3 - Connector <-> Servo
 		b2RevoluteJointDef jointADef;
-		jointADef.Initialize(bAndBBodies.find("servo")->second, walls[0], b2Vec2(6.5f, 4.5f));
+		jointADef.Initialize(bAndBBodies.find("servo")->second, walls[0], b2Vec2(6.5f, 4.4f));
 		jointADef.collideConnected = false;
 		joint31 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointADef));
 
 		b2PrismaticJointDef jointBDef;
-		jointBDef.Initialize(bAndBBodies.find("conn")->second, walls[0], b2Vec2(7.55f, 4.5f), b2Vec2(0.0f, 1.0f));
+		jointBDef.Initialize(bAndBBodies.find("conn")->second, walls[0], b2Vec2(7.55f, 4.4f), b2Vec2(0.0f, 1.0f));
 		jointBDef.collideConnected = false;
 		joint32 = reinterpret_cast<b2PrismaticJoint*>(world->CreateJoint(&jointBDef));
 
@@ -191,11 +191,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 	return true;
 }
 
-void PhysicalModel::Update(int dt)
+void PhysicalModel::Update(float dt)
 {
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
-	world->Step(1.0f/60.0f, velocityIterations, positionIterations);
+	world->Step(dt, velocityIterations, positionIterations);
 }
 
 void PhysicalModel::SetServoTimeDelay(float servoTimeDelay)
