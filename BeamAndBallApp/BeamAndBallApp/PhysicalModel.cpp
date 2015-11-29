@@ -28,11 +28,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 	gravity.Set(0.0f, -10.0f); 
 	world = new b2World(gravity);
 
-	b2BodyDef bDef;
-
 	// Walls around the world
 		// Ground
-		bDef.position.Set(5.0f, 0.0f); 
+		b2BodyDef bDef;
+		bDef.position.Set(5.0f, 0.0f);
+		bDef.allowSleep = false;
 		b2Body* wallBody = world->CreateBody(&bDef);
 		b2EdgeShape wG;
 		b2Vec2 v1(0.0f, 0.0f);
@@ -42,9 +42,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		walls.push_back(wallBody);
 
 		// Left
+		b2BodyDef bDef2;
 		b2EdgeShape wL;
-		bDef.position.Set(0.0f, 5.0f);
-		wallBody = world->CreateBody(&bDef);
+		bDef2.position.Set(0.0f, 5.0f);
+		bDef2.allowSleep = false;
+		wallBody = world->CreateBody(&bDef2);
 		v1.Set(0.0f, 0.0f);
 		v2.Set(0.0f, 10.0f);
 		wL.Set(v1, v2);
@@ -52,9 +54,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		walls.push_back(wallBody);
 
 		// Right
+		b2BodyDef bDef3;
 		b2EdgeShape wR;
-		bDef.position.Set(10.0f, 5.0f);
-		wallBody = world->CreateBody(&bDef);
+		bDef3.position.Set(10.0f, 5.0f);
+		bDef3.allowSleep = false;
+		wallBody = world->CreateBody(&bDef3);
 		v1.Set(10.0f, 0.0f);
 		v2.Set(10.0f, 10.0f);
 		wR.Set(v1, v2);
@@ -62,9 +66,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		walls.push_back(wallBody);
 
 		// Up
+		b2BodyDef bDef4;
 		b2EdgeShape wU;
-		bDef.position.Set(5.0f, 10.0f);
-		wallBody = world->CreateBody(&bDef);
+		bDef4.position.Set(5.0f, 10.0f);
+		bDef4.allowSleep = false;
+		wallBody = world->CreateBody(&bDef4);
 		v1.Set(0.0f, 10.0f);
 		v2.Set(10.0f, 10.0f);
 		wU.Set(v1, v2);
@@ -73,9 +79,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 	// Servo, Beam, Ball, Connection Beam - Default Values
 		// Beam
-		bDef.position.Set(5.0f, 6.45f);
-		bDef.type = b2_dynamicBody;
-		b2Body* body = world->CreateBody(&bDef);
+		b2BodyDef bDef5;
+		bDef5.position.Set(5.0f, 6.45f);
+		bDef5.type = b2_dynamicBody;
+		bDef5.allowSleep = false;
+		b2Body* body = world->CreateBody(&bDef5);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("beam", body));
 		b2PolygonShape beam;
 		beam.SetAsBox(2.5f, 0.05f);
@@ -85,9 +93,11 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body->CreateFixture(&fixDef);
 
 		// Connector
-		bDef.position.Set(7.55f, 4.4f);
-		bDef.type = b2_dynamicBody;
-		body = world->CreateBody(&bDef);
+		b2BodyDef bDef6;
+		bDef6.position.Set(7.55f, 4.4f);
+		bDef6.type = b2_dynamicBody;
+		bDef6.allowSleep = false;
+		body = world->CreateBody(&bDef6);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("conn", body));
 		b2PolygonShape conn;
 		conn.SetAsBox(0.05f, 4.0f);
@@ -96,10 +106,12 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body->CreateFixture(&fixDef);
 
 		// Ball
-		bDef.position.Set(5.166f, 7.0f);
-		bDef.type = b2_dynamicBody;
-		bDef.bullet = true;
-		body = world->CreateBody(&bDef);
+		b2BodyDef bDef7;
+		bDef7.position.Set(5.166f, 7.0f);
+		bDef7.type = b2_dynamicBody;
+		bDef7.allowSleep = false;
+		bDef7.bullet = true;
+		body = world->CreateBody(&bDef7);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
 		b2CircleShape ball;
 		ball.m_p.Set(5.166f, 7.0f);
@@ -109,11 +121,13 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body->CreateFixture(&fixDef);
 
 		// Servo
-		bDef.position.Set(6.5f, 4.4f);
-		bDef.type = b2_dynamicBody;
-		bDef.bullet = false;
-		bDef.gravityScale = 0.0f;
-		body = world->CreateBody(&bDef);
+		b2BodyDef bDef8;
+		bDef8.position.Set(6.5f, 4.4f);
+		bDef8.allowSleep = false;
+		bDef8.type = b2_dynamicBody;
+		bDef8.bullet = false;
+		bDef8.gravityScale = 0.0f;
+		body = world->CreateBody(&bDef8);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("servo", body));
 		b2CircleShape servo;
 		servo.m_p.Set(6.5f, 4.4f);
@@ -123,10 +137,12 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		body->CreateFixture(&fixDef);
 
 		// triangle
-		bDef.position.Set(2.5f, 6.5f);
-		bDef.type = b2_staticBody;
-		bDef.gravityScale = 0.0f;
-		body = world->CreateBody(&bDef);
+		b2BodyDef bDef9;
+		bDef9.allowSleep = false;
+		bDef9.position.Set(2.5f, 6.5f);
+		bDef9.type = b2_staticBody;
+		bDef9.gravityScale = 0.0f;
+		body = world->CreateBody(&bDef9);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("triangle", body));
 		b2PolygonShape triangle;
 		b2Vec2 points[3];
@@ -177,7 +193,9 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 void PhysicalModel::Update(int dt)
 {
-
+	int32 velocityIterations = 6;
+	int32 positionIterations = 2;
+	world->Step(1.0f/60.0f, velocityIterations, positionIterations);
 }
 
 void PhysicalModel::SetServoTimeDelay(float servoTimeDelay)
