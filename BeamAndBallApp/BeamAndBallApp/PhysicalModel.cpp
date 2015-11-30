@@ -92,6 +92,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		b2FixtureDef fixDef;
 		fixDef.shape = beam;
 		fixDef.density = 4.0f;
+		fixDef.restitution = 0.0f;
 		body->CreateFixture(&fixDef);
 
 		// Connector
@@ -192,6 +193,9 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		b2RevoluteJointDef jointBDef;
 		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.55f, 4.4f));
 		jointBDef.collideConnected = false;
+		jointBDef.enableLimit = true;
+		jointBDef.lowerAngle = b2_pi/2;
+		jointBDef.upperAngle = -b2_pi / 2;
 		joint32 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointBDef));
 
 	initialized = true;
@@ -208,10 +212,10 @@ void PhysicalModel::Update(float dt, float desiredPos)
 	int32 positionIterations = 2;
 
 	float odchylka = desiredPos - bAndBBodies.find("ball")->second->GetPosition().x;
-	float desiredAngle = regulator.getAngle((odchylka - 5) / 10.0f, oldDiff) * 90;
+	float desiredAngle = regulator.getAngle((odchylka - 5) / 10.0f, oldDiff) * (-b2_pi/2);
 	oldDiff = odchylka;
 
-	if (bAndBBodies.find("servo")->second->GetAngle() == desiredAngle)
+	if (bAndBBodies.find("servo")->second->GetAngle() - desiredAngle <= 1)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
 	}

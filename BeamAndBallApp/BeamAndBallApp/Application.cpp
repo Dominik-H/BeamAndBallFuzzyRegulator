@@ -28,7 +28,7 @@ bool Application::Init(sf::RenderWindow* window)
 	this->window = window;
 	dDraw = new SFMLDebugDraw(*window);
 
-	physicalWorld.Init(800, 600, 5.0f);
+	physicalWorld.Init(800, 600, 1.0f);
 
 	physicalWorld.GetWorld()->SetDebugDraw(dDraw);
 	dDraw->SetFlags(b2Draw::e_shapeBit);
