@@ -209,6 +209,7 @@ void PhysicalModel::Update(float dt)
 	if (servoTimeDelay >= 0.5f)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(-bAndBBodies.find("servo")->second->GetAngularVelocity());
+		bAndBBodies.find("servo")->second->GetAngle();
 		servoTimeDelay = 0.0f;
 	}
 	
