@@ -10,7 +10,7 @@ public:
 	~PhysicalModel();
 
 	bool Init(int width, int height, float servoTimeDelay);
-	void Update(float dt);
+	void Update(float dt, float desiredPos);
 	void SetServoTimeDelay(float servoTimeDelay);
 	void SetGravity(float gravityAcceleration);
 
@@ -26,7 +26,7 @@ private:
 	bool ReInit();
 
 	FuzzyRegulator regulator;
-	float regulatorOutput;
+	float oldDiff;
 	float servoTimeDelay;
 	b2World* world;
 	b2Vec2 gravity;

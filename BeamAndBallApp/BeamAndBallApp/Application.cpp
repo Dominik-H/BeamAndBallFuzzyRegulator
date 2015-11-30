@@ -28,7 +28,7 @@ bool Application::Init(sf::RenderWindow* window)
 	this->window = window;
 	dDraw = new SFMLDebugDraw(*window);
 
-	physicalWorld.Init(800, 600, 0.1f);
+	physicalWorld.Init(800, 600, 5.0f);
 
 	physicalWorld.GetWorld()->SetDebugDraw(dDraw);
 	dDraw->SetFlags(b2Draw::e_shapeBit);
@@ -78,7 +78,7 @@ bool Application::Init(sf::RenderWindow* window)
 
 void Application::Update(sf::Time dt) 
 {
-	physicalWorld.Update(dt.asSeconds());
+	physicalWorld.Update(dt.asSeconds(), 5.166f);
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 	/*
 	// Update code...

@@ -24,6 +24,8 @@ PhysicalModel::~PhysicalModel()
 
 bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 {
+	regulator.Init();
+
 	gravity.Set(0.0f, -10.0f); 
 	world = new b2World(gravity);
 
@@ -194,23 +196,34 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 	initialized = true;
 
-	this->servoTimeDelay = 0.0f;
+	this->servoTimeDelay = servoTimeDelay;
+	oldDiff = 0.0f;
 
 	return true;
 }
 
-void PhysicalModel::Update(float dt)
+void PhysicalModel::Update(float dt, float desiredPos)
 {
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
-	servoTimeDelay += dt;
+	float odchylka = desiredPos - bAndBBodies.find("ball")->second->GetPosition().x;
+	float desiredAngle = regulator.getAngle(odchylka, oldDiff);
+	oldDiff = odchylka;
 
-	if (servoTimeDelay >= 0.5f)
+	if (bAndBBodies.find("servo")->second->GetAngle() == desiredAngle)
 	{
-		bAndBBodies.find("servo")->second->SetAngularVelocity(-bAndBBodies.find("servo")->second->GetAngularVelocity());
-		bAndBBodies.find("servo")->second->GetAngle();
-		servoTimeDelay = 0.0f;
+		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
+	}
+
+	if (bAndBBodies.find("servo")->second->GetAngle() > desiredAngle)
+	{
+		bAndBBodies.find("servo")->second->SetAngularVelocity(-servoTimeDelay);
+	}
+
+	if (bAndBBodies.find("servo")->second->GetAngle() < desiredAngle)
+	{
+		bAndBBodies.find("servo")->second->SetAngularVelocity(servoTimeDelay);
 	}
 	
 	world->Step(1.0f/60.0f, velocityIterations, positionIterations);
