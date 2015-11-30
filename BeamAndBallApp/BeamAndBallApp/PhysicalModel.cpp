@@ -208,7 +208,7 @@ void PhysicalModel::Update(float dt, float desiredPos)
 	int32 positionIterations = 2;
 
 	float odchylka = desiredPos - bAndBBodies.find("ball")->second->GetPosition().x;
-	float desiredAngle = regulator.getAngle(odchylka, oldDiff);
+	float desiredAngle = regulator.getAngle((odchylka - 5) / 10.0f, oldDiff) * 90;
 	oldDiff = odchylka;
 
 	if (bAndBBodies.find("servo")->second->GetAngle() == desiredAngle)
