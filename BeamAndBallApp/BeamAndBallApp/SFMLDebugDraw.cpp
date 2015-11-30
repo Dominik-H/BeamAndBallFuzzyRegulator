@@ -93,7 +93,7 @@ void SFMLDebugDraw::DrawTransform(const b2Transform& xf)
 {
 	float lineLength = 0.4;
 
-	/*b2Vec2 xAxis(b2Vec2(xf.p.x + (lineLength * xf.q.c), xf.p.y + (lineLength * xf.q.s)));*/
+	//b2Vec2 xAxis(b2Vec2(xf.p.x + (lineLength * xf.q.c), xf.p.y + (lineLength * xf.q.s)));
 	b2Vec2 xAxis = xf.p + lineLength * xf.q.GetXAxis();
 	sf::Vertex redLine[] = 
 	{
@@ -103,7 +103,7 @@ void SFMLDebugDraw::DrawTransform(const b2Transform& xf)
 
 	// You might notice that the ordinate(Y axis) points downward unlike the one in Box2D testbed
 	// That's because the ordinate in SFML coordinate system points downward while the OpenGL(testbed) points upward
-	/*b2Vec2 yAxis(b2Vec2(xf.p.x + (lineLength * -xf.q.s), xf.p.y + (lineLength * xf.q.c)));*/
+	//b2Vec2 yAxis(b2Vec2(xf.p.x + (lineLength * -xf.q.s), xf.p.y + (lineLength * xf.q.c)));
 	b2Vec2 yAxis = xf.p + lineLength * xf.q.GetYAxis();
 	sf::Vertex greenLine[] = 
 	{

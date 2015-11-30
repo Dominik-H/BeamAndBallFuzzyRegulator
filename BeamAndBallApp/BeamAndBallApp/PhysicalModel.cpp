@@ -215,7 +215,7 @@ void PhysicalModel::Update(float dt, float desiredPos)
 	float desiredAngle = regulator.getAngle((odchylka - 5) / 10.0f, oldDiff) * (-b2_pi/2);
 	oldDiff = odchylka;
 
-	if (bAndBBodies.find("servo")->second->GetAngle() - desiredAngle <= 1)
+	if (bAndBBodies.find("servo")->second->GetAngle() - desiredAngle <= 2)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
 	}
