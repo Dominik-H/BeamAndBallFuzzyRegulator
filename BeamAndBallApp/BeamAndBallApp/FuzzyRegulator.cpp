@@ -14,6 +14,7 @@ FuzzyRegulator::~FuzzyRegulator()
 void FuzzyRegulator::Init()
 {
 	fl::Engine* engine = new fl::Engine("beamAndBallMain");
+	engine->configure("AlgebraicProduct", "AlgebraicSum", "Minimum", "Maximum", "Centroid");
 
 	// Input 1
 	odchylka = new fl::InputVariable;
@@ -57,12 +58,63 @@ void FuzzyRegulator::Init()
 
 	// Rules
 	fl::RuleBlock* ruleblock = new fl::RuleBlock;
-	//ruleblock->addRule(fl::Rule::parse("if Ambient is DARK then Power is HIGH", engine));
+	ruleblock->setEnabled(true);
+	ruleblock->setName("");
+	ruleblock->setConjunction(new fl::Minimum());
+	ruleblock->setDisjunction(new fl::Maximum());
+	ruleblock->setImplication(new fl::Minimum());
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is NB then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is NB then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is NB then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is NB then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is NB then angle is NM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is NB then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is NB then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is NM then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is NM then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is NM then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is NM then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is NM then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is NM then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is NM then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is NS then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is NS then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is NS then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is NS then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is NS then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is NS then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is NS then angle is PM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is ZE then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is ZE then angle is NM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is ZE then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is ZE then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is ZE then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is ZE then angle is PM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is ZE then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is PS then angle is NM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is PS then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is PS then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is PS then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is PS then angle is PM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is PS then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is PS then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is PM then angle is NS1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is PM then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is PM then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is PM then angle is PM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is PM then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is PM then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is PM then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NB and deltaE is PB then angle is NPM", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NM and deltaE is PB then angle is PM1", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is NS and deltaE is PB then angle is PM2", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is ZE and deltaE is PB then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is PB then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is PB then angle is PM3", engine));
+	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is PB then angle is PM3", engine));
 	engine->addRuleBlock(ruleblock);
 
 	// Stuff
-	engine->configure("", "", "Minimum", "Maximum", "Centroid");
-
 	std::string status;
 	if (not engine->isReady(&status))
 		throw fl::Exception("Engine not ready. "
