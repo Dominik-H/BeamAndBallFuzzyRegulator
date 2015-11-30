@@ -125,8 +125,9 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		b2BodyDef bDef8;
 		bDef8.position.Set(6.55f, 4.4f);
 		bDef8.allowSleep = false;
-		bDef8.type = b2_dynamicBody;
+		bDef8.type = b2_kinematicBody;
 		bDef8.bullet = false;
+		bDef8.angularVelocity = -1.0f;
 		bDef8.gravityScale = 0.0f;
 		body = world->CreateBody(&bDef8);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("servo", body));
@@ -188,9 +189,6 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		// Joint #3B - Pin <-> Servo
 		b2RevoluteJointDef jointBDef;
 		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.55f, 4.4f));
-		jointBDef.enableMotor = true;
-		jointBDef.motorSpeed = -5;
-		jointBDef.maxMotorTorque = 3;
 		jointBDef.collideConnected = false;
 		joint32 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointBDef));
 
@@ -208,10 +206,9 @@ void PhysicalModel::Update(float dt)
 
 	servoTimeDelay += dt;
 
-	if (servoTimeDelay >= 3.0f)
+	if (servoTimeDelay >= 0.5f)
 	{
-		joint32->SetMotorSpeed(-joint32->GetMotorSpeed());
-		joint32->SetMaxMotorTorque(0);
+		bAndBBodies.find("servo")->second->SetAngularVelocity(-bAndBBodies.find("servo")->second->GetAngularVelocity());
 		servoTimeDelay = 0.0f;
 	}
 	
