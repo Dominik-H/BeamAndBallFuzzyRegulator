@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PhysicalModel.h"
 
+#define DEGTORAD (b2_pi/180.0f)
 
 PhysicalModel::PhysicalModel()
 {
@@ -194,8 +195,8 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		jointBDef.Initialize(bAndBBodies.find("servoPin")->second, bAndBBodies.find("servo")->second, b2Vec2(6.55f, 4.4f));
 		jointBDef.collideConnected = false;
 		jointBDef.enableLimit = true;
-		jointBDef.lowerAngle = b2_pi/2;
-		jointBDef.upperAngle = -b2_pi / 2;
+		/*jointBDef.lowerAngle = -b2_pi/2;
+		jointBDef.upperAngle = b2_pi / 2;*/
 		joint32 = reinterpret_cast<b2RevoluteJoint*>(world->CreateJoint(&jointBDef));
 
 	initialized = true;
@@ -211,23 +212,27 @@ void PhysicalModel::Update(float dt, float desiredPos)
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
-	float odchylka = desiredPos - bAndBBodies.find("ball")->second->GetPosition().x;
-	float desiredAngle = regulator.getAngle((odchylka - 5) / 10.0f, oldDiff) * (-b2_pi/2);
-	oldDiff = odchylka;
+	float odchylka = ((desiredPos - bAndBBodies.find("ball")->second->GetPosition().x) - 5 ) / 5.0f;
+	float desiredAngle = regulator.getAngle(odchylka, oldDiff) * (b2_pi/2);
+	oldDiff -= odchylka;
 
-	if (bAndBBodies.find("servo")->second->GetAngle() - desiredAngle <= 2)
+	float actualAngle = bAndBBodies.find("servo")->second->GetAngle();
+
+	if (abs(actualAngle - desiredAngle) <= 1e-2)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
 	}
+	else {
 
-	if (bAndBBodies.find("servo")->second->GetAngle() > desiredAngle)
-	{
-		bAndBBodies.find("servo")->second->SetAngularVelocity(-servoTimeDelay);
-	}
+		if (actualAngle > desiredAngle)
+		{
+			bAndBBodies.find("servo")->second->SetAngularVelocity(-servoTimeDelay);
+		}
 
-	if (bAndBBodies.find("servo")->second->GetAngle() < desiredAngle)
-	{
-		bAndBBodies.find("servo")->second->SetAngularVelocity(servoTimeDelay);
+		if (actualAngle < desiredAngle)
+		{
+			bAndBBodies.find("servo")->second->SetAngularVelocity(servoTimeDelay);
+		}
 	}
 	
 	world->Step(1.0f/60.0f, velocityIterations, positionIterations);

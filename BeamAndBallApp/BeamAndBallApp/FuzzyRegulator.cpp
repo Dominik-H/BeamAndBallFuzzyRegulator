@@ -13,6 +13,7 @@ FuzzyRegulator::~FuzzyRegulator()
 
 void FuzzyRegulator::Init()
 {
+	//engine = fl::FisImporter().fromFile("Regulator.fis"); /*
 	engine = new fl::Engine("beamAndBallMain");
 	engine->configure("Minimum", "Maximum", "Minimum", "Maximum", "Centroid");
 
@@ -48,7 +49,7 @@ void FuzzyRegulator::Init()
 	angle->setRange(-1.000, 1.000);
 	angle->setDefaultValue(fl::nan);
 	angle->setDefuzzifier(new fl::Centroid());
-	angle->setDefaultValue(fl::nan);
+	angle->setDefaultValue(0.0f);
 	angle->fuzzyOutput()->setAccumulation(new fl::Maximum());
 	angle->addTerm(new fl::Triangle("NM3", -fl::inf, -0.75f, -0.5f));
 	angle->addTerm(new fl::Triangle("NM2", -0.75, -0.5, -0.25));
@@ -115,7 +116,7 @@ void FuzzyRegulator::Init()
 	ruleblock->addRule(fl::Rule::parse("if odchylka is PS and deltaE is PB then angle is PM3", engine));
 	ruleblock->addRule(fl::Rule::parse("if odchylka is PM and deltaE is PB then angle is PM3", engine));
 	ruleblock->addRule(fl::Rule::parse("if odchylka is PB and deltaE is PB then angle is PM3", engine));
-	engine->addRuleBlock(ruleblock);
+	engine->addRuleBlock(ruleblock);//*/
 
 	// Stuff
 	std::string status;
@@ -126,8 +127,11 @@ void FuzzyRegulator::Init()
 
 float FuzzyRegulator::getAngle(float odchylka, float rozdiel)
 {
+	/*engine->getInputVariable("E")->setValue(odchylka);
+	engine->getInputVariable("deltaE")->setValue(rozdiel);*/
 	this->odchylka->setValue(odchylka);
 	deltaE->setValue(rozdiel);
 	engine->process();
 	return angle->getValue();
+	//return engine->getOutputVariable("output1")->getValue();
 }
