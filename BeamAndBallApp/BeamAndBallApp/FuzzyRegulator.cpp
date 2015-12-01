@@ -49,7 +49,7 @@ void FuzzyRegulator::Init()
 	angle->setRange(-1.000, 1.000);
 	angle->setDefaultValue(fl::nan);
 	angle->setDefuzzifier(new fl::Centroid());
-	angle->setDefaultValue(0.0f);
+	//angle->setDefaultValue(0.0f);
 	angle->fuzzyOutput()->setAccumulation(new fl::Maximum());
 	angle->addTerm(new fl::Triangle("NM3", -fl::inf, -0.75f, -0.5f));
 	angle->addTerm(new fl::Triangle("NM2", -0.75, -0.5, -0.25));
