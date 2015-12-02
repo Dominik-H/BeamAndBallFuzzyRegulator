@@ -23,6 +23,16 @@ PhysicalModel::~PhysicalModel()
 	}
 }
 
+void BeginContact(b2Contact* contact) 
+{ 
+	b2Body* bodyA = contact->GetFixtureA()->GetBody(); 
+	b2Body* bodyB = contact->GetFixtureB()->GetBody(); 
+	if (bodyA->GetType() == b2_dynamicBody && bodyB->GetType() == b2_dynamicBody) 
+	{ 
+		bodyA->SetAwake(false); bodyB->SetAwake(false); 
+	} 
+}
+
 bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 {
 	regulator.Init();
@@ -123,6 +133,7 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 		fixDef.shape = ball;
 		fixDef.density = 0.5f;
 		fixDef.restitution = 0.0f;
+		//fixDef.isSensor = true;
 		body->CreateFixture(&fixDef);
 
 		// Servo
@@ -209,16 +220,16 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 void PhysicalModel::Update(float dt, float desiredPos)
 {
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
+	int32 velocityIterations = 10;
+	int32 positionIterations = 8;
 
-	float odchylka = ((desiredPos - bAndBBodies.find("ball")->second->GetPosition().x) - 5 ) / 5.0f;
-	float desiredAngle = regulator.getAngle(odchylka, oldDiff) * (b2_pi/2);
+	float odchylka = ((bAndBBodies.find("ball")->second->GetPosition().x - 2.5f) - desiredPos) / 5.0f;
+	float desiredAngle = regulator.getAngle(odchylka, oldDiff-odchylka) * (b2_pi/2);
 	oldDiff = odchylka;
 
 	float actualAngle = bAndBBodies.find("servo")->second->GetAngle();
 
-	if (abs(actualAngle - desiredAngle) <= 2)
+	if (abs(actualAngle - desiredAngle) <= 1e-3)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
 	}
@@ -234,6 +245,8 @@ void PhysicalModel::Update(float dt, float desiredPos)
 			bAndBBodies.find("servo")->second->SetAngularVelocity(servoTimeDelay);
 		}
 	}
+
+	
 	
 	world->Step(1.0f/60.0f, velocityIterations, positionIterations);
 }
