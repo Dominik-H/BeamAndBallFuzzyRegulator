@@ -122,16 +122,17 @@ bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 
 		// Ball
 		b2BodyDef bDef7;
-		bDef7.position.Set(5.166f, 9.0f);
+		bDef7.position.Set(5.166f, 7.0f);
 		bDef7.type = b2_dynamicBody;
 		bDef7.allowSleep = false;
 		bDef7.bullet = true;
 		body = world->CreateBody(&bDef7);
+		body->SetLinearDamping(2.0f);
 		bAndBBodies.insert(std::pair<std::string, b2Body*>("ball", body));
 		b2CircleShape* ball = new b2CircleShape();
 		ball->m_radius = 0.5f;
 		fixDef.shape = ball;
-		fixDef.density = 0.5f;
+		fixDef.density = 15.5f;
 		fixDef.restitution = 0.0f;
 		//fixDef.isSensor = true;
 		body->CreateFixture(&fixDef);
@@ -229,7 +230,7 @@ void PhysicalModel::Update(float dt, float desiredPos)
 
 	float actualAngle = bAndBBodies.find("servo")->second->GetAngle();
 
-	if (abs(actualAngle - desiredAngle) <= 1e-3)
+	if (abs(actualAngle - desiredAngle) <= 1e-1)
 	{
 		bAndBBodies.find("servo")->second->SetAngularVelocity(0);
 	}
