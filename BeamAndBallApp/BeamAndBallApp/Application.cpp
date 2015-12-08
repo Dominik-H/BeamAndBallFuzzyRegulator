@@ -33,23 +33,23 @@ bool Application::Init(sf::RenderWindow* window)
 	//physicalWorld.GetWorld()->SetDebugDraw(dDraw);
 	//dDraw->SetFlags(b2Draw::e_shapeBit);
 	
-	if (!texture.loadFromFile("ball.png"))
+	if (!texture.loadFromFile("Assets/Textures/ball.png"))
 		return -1;
 	texture.setSmooth(true);
-	if (!roof.loadFromFile("roof1.png"))
+	if (!roof.loadFromFile("Assets/Textures/roof1.png"))
 		return -1;
 	roof.setSmooth(true);
-	if (!house.loadFromFile("house2.png"))
+	if (!house.loadFromFile("Assets/Textures/house2.png"))
 		return -1;
-	if (!menu.loadFromFile("wood.png"))
+	if (!menu.loadFromFile("Assets/Textures/wood.png"))
 		return -1;
-	if (!tree.loadFromFile("tree1.png"))
+	if (!tree.loadFromFile("Assets/Textures/tree1.png"))
 		return -1;
-	if (!background.loadFromFile("background3.png"))
+	if (!background.loadFromFile("Assets/Textures/background3.png"))
 		return -1;
-	if (!button.loadFromFile("Botton.png"))
+	if (!button.loadFromFile("Assets/Textures/Botton.png"))
 		return -1;
-	if (!buttons.loadFromFile("buttons.png"))
+	if (!buttons.loadFromFile("Assets/Textures/buttons.png"))
 		return -1;
 	
 
@@ -111,7 +111,7 @@ bool Application::Init(sf::RenderWindow* window)
 	
 	////////////////////////////// BUTTTONS ////////////////////////////////////////
 
-	// BUTTTON1
+	// BUTTTON1 
 	sf::RectangleShape* button1 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
 	button1->setFillColor(sf::Color(61, 44, 7));
 	button1->setTexture(&buttons);
@@ -131,7 +131,7 @@ bool Application::Init(sf::RenderWindow* window)
 	layoutObjects.insert(std::pair<std::string, sf::Shape*>("zbutton3", button3));
 	//sf::String word;
 
-	font.loadFromFile("PINEWOOD.ttf");
+	font.loadFromFile("Assets/Fonts/PINEWOOD.ttf");
 
 	ztextB1.setFont(font);
 	ztextB1.setPosition(50, 50);
