@@ -33,9 +33,30 @@ bool Application::Init(sf::RenderWindow* window)
 	//physicalWorld.GetWorld()->SetDebugDraw(dDraw);
 	//dDraw->SetFlags(b2Draw::e_shapeBit);
 	
+	if (!texture.loadFromFile("ball.png"))
+		return -1;
+	texture.setSmooth(true);
+	if (!roof.loadFromFile("roof1.png"))
+		return -1;
+	roof.setSmooth(true);
+	if (!house.loadFromFile("house2.png"))
+		return -1;
+	if (!menu.loadFromFile("wood.png"))
+		return -1;
+	if (!tree.loadFromFile("tree1.png"))
+		return -1;
+	if (!background.loadFromFile("background3.png"))
+		return -1;
+	if (!button.loadFromFile("Botton.png"))
+		return -1;
+	if (!buttons.loadFromFile("buttons.png"))
+		return -1;
+	
+
 	// Ball
 	sf::CircleShape* shape = new sf::CircleShape(30.f);
-	shape->setFillColor(sf::Color::Green);
+	//shape->setFillColor(sf::Color::Red);
+	shape->setTexture(&texture);
 	shape->setOrigin(30, 30);
 	shape->move(DRIFT + 280, 150);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("zball", shape));
@@ -56,33 +77,96 @@ bool Application::Init(sf::RenderWindow* window)
 
 	// Triangle
 	sf::CircleShape* triangle = new sf::CircleShape(103.923f,3);
-	triangle->setFillColor(sf::Color::Red);
+	//triangle->setFillColor(sf::Color::Red);
+	triangle->setTexture(&roof);
 	triangle->move(DRIFT + 46, 216);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("triangle", triangle));
 
 	// Servo
 	sf::CircleShape* servo = new sf::CircleShape(60.f);
 	servo->setFillColor(sf::Color::Yellow);
+	servo->setTexture(&tree);
 	servo->setOrigin(60,60);
 	servo->move(DRIFT + 330, 276);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("aservo", servo));
 
 	// Box
-	//sf::RectangleShape* box = new sf::RectangleShape(sf::Vector2f(180.0f, 190.0f));
-	//box->setFillColor(sf::Color::Blue);
-	//box->move(DRIFT + 60, 372);
-	//modelObjects.insert(std::pair<std::string, sf::Shape*>("box", box));
+	sf::RectangleShape* box = new sf::RectangleShape(sf::Vector2f(180.0f, 190.0f));
+	box->setTexture(&house);
+	box->move(DRIFT + 60, 372);
+	modelObjects.insert(std::pair<std::string, sf::Shape*>("box", box));
+	
+	// BACKGROUND
+	sf::RectangleShape* bg = new sf::RectangleShape(sf::Vector2f(600.0f, 600.0f));
+	bg->setTexture(&background);
+	bg->move(DRIFT, 0);
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("bg", bg));
 
 	// LeftLayout
 	sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(200.0f, 600.0f));
+	//rect->setFillColor(sf::Color::Magenta);
+	rect->setTexture(&menu);
 	layoutObjects.insert(std::pair<std::string, sf::Shape*>("layoutBg", rect));
+	///////////////////////////////TEXT INPTU///////////////////////////////////////
+	
+	////////////////////////////// BUTTTONS ////////////////////////////////////////
+
+	// BUTTTON1
+	sf::RectangleShape* button1 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button1->setFillColor(sf::Color(61, 44, 7));
+	button1->setTexture(&buttons);
+	button1->move(50,50);
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("zbutton1", button1));
+
+	// BUTTON2
+	sf::RectangleShape* button2 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button2->setFillColor(sf::Color(61, 44, 7));
+	button2->setTexture(&buttons);
+	button2->move(50, 120);
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("zbutton2", button2));
+	/// BUTTON3  SEND
+	sf::RectangleShape* button3 = new sf::RectangleShape(sf::Vector2f(100.0f, 40.0f));
+	button3->setTexture(&button);
+	button3->move(50, 180);
+	layoutObjects.insert(std::pair<std::string, sf::Shape*>("zbutton3", button3));
+	//sf::String word;
+
+	font.loadFromFile("PINEWOOD.ttf");
+
+	ztextB1.setFont(font);
+	ztextB1.setPosition(50, 50);
+	ztextB1.setColor(sf::Color::White);
+	ztextB1.setCharacterSize(24);
+
+	ztextB2.setFont(font);
+	ztextB2.setPosition(50, 120);
+	ztextB2.setColor(sf::Color::White);
+	ztextB2.setCharacterSize(24);
+
+	ztextB3.setFont(font);
+	ztextB3.setPosition(72, 180);
+	ztextB3.setColor(sf::Color::Black);
+	ztextB3.setCharacterSize(24);
+	ztextB3.setString("SEND");
+
+	ztextN1.setFont(font);
+	ztextN1.setPosition(30, 20);
+	ztextN1.setColor(sf::Color::White);
+	ztextN1.setCharacterSize(16);
+	ztextN1.setString("Ball weight in kg");
+
+	ztextN2.setFont(font);
+	ztextN2.setPosition(30, 90);
+	ztextN2.setColor(sf::Color::White);
+	ztextN2.setCharacterSize(16);
+	ztextN2.setString("Beam length in m");
 
 	return true;
 }
 
 void Application::Update(sf::Time dt) 
 {
-	physicalWorld.Update(dt.asSeconds(), 0.0f);
+	physicalWorld.Update(dt.asSeconds(), 4.75f);
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 	
 	// Update code...
@@ -107,25 +191,32 @@ void Application::Update(sf::Time dt)
 	modelObjects.find("aservo")->second->setPosition(DRIFT  + bodies->find("servo")->second->GetPosition().x * 60, window->getSize().y  - bodies->find("servo")->second->GetPosition().y * 60);
 		
 	totalTime += dt.asMilliseconds();
+
+	
 	
 }
 
 void Application::Draw()
 {
-	// Draw code ...
-	window->clear();
 
+	// Draw code ...
+	window->clear(sf::Color::White);
 	//physicalWorld.GetWorld()->DrawDebugData();
+	for (auto i = layoutObjects.begin(); i != layoutObjects.end(); ++i)
+	{
+		window->draw(*(i->second));
+	}
 
 	for (auto i = modelObjects.begin(); i != modelObjects.end(); ++i)
 	{
 		window->draw(*(i->second));
 	}
 
-	for (auto i = layoutObjects.begin(); i != layoutObjects.end(); ++i)
-	{
-		window->draw(*(i->second));
-	}
-
+	
+	window->draw(ztextB1);
+	window->draw(ztextB2);
+	window->draw(ztextB3);
+	window->draw(ztextN1);
+	window->draw(ztextN2);
 	window->display();
 }
