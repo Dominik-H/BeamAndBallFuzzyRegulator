@@ -166,7 +166,7 @@ bool Application::Init(sf::RenderWindow* window)
 
 void Application::Update(sf::Time dt) 
 {
-	physicalWorld.Update(dt.asSeconds(), 4.75f);
+	physicalWorld.Update(dt.asSeconds(), 0.25f);
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 	
 	// Update code...
