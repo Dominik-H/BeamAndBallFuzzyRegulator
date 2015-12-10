@@ -29,6 +29,14 @@ public:
 		return ztextB2.getString();
 	}
 
+	void setTextB4(std::string text){
+		ztextB4.setString(text);
+	}
+
+	std::string getTextB4(){
+		return ztextB4.getString();
+	}
+
 	sf::Shape* getShape(std::string text ){
 		return layoutObjects.find(text)->second;
 	}
@@ -43,10 +51,14 @@ private:
 	sf::Text ztextB1;
 	sf::Text ztextB2;
 	sf::Text ztextB3;
+	sf::Text ztextB4;
+
+
 
 	sf::Text ztextN1;
 	sf::Text ztextN2;
 	sf::Text ztextN3;
+	sf::Text ztextN4;
 
 	sf::Texture texture;
 	sf::Texture roof;
@@ -56,6 +68,7 @@ private:
 	sf::Texture background;
 	sf::Texture button;
 	sf::Texture buttons;
+	sf::Texture about;
 
 	//sf::String name;
 	sf::Font font;
