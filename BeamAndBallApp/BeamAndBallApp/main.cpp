@@ -207,7 +207,7 @@ int main(int argc, char** argv)
 					if (!graphsWin)
 					{
 						graphsWin = true;
-						graphsWindow = new sf::RenderWindow(sf::VideoMode(800, 600), "Beam & Ball App - Graphs", sf::Style::Close);
+						graphsWindow = new sf::RenderWindow(sf::VideoMode(800, 500), "Beam & Ball App - Graphs", sf::Style::Close);
 					}
 				}
 

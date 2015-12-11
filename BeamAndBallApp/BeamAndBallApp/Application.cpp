@@ -388,21 +388,22 @@ void Application::Update(sf::Time dt)
 	// Update code...
 
 	// Ball
-	if (oldRot != bodies->find("ball")->second->GetTransform().q.GetAngle() || oldPosX != bodies->find("ball")->second->GetPosition().x || oldPosY != bodies->find("ball")->second->GetPosition().y)
+	if ((abs(oldRot - bodies->find("ball")->second->GetTransform().q.GetAngle()) <= 1e-3) || (abs(oldPosX - bodies->find("ball")->second->GetPosition().x) <= 1e-3) || (abs(oldPosY - bodies->find("ball")->second->GetPosition().y) <= 1e-3))
 	{
 		modelObjects.find("zball")->second->setTexture(&movingBall);
 
 		oldRot = bodies->find("ball")->second->GetTransform().q.GetAngle();
 		oldPosX = bodies->find("ball")->second->GetPosition().x;
 		oldPosY = bodies->find("ball")->second->GetPosition().y;
-
-		modelObjects.find("zball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
-		modelObjects.find("zball")->second->setPosition(DRIFT + bodies->find("ball")->second->GetPosition().x * 60, window->getSize().y - bodies->find("ball")->second->GetPosition().y * 60);
 	}
 	else
 	{
 		modelObjects.find("zball")->second->setTexture(&staticBall);
 	}
+	
+	modelObjects.find("zball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
+	modelObjects.find("zball")->second->setPosition(DRIFT + bodies->find("ball")->second->GetPosition().x * 60, window->getSize().y - bodies->find("ball")->second->GetPosition().y * 60);
+
 
 	// Beam
 	modelObjects.find("beam")->second->setRotation(bodies->find("beam")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
