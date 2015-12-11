@@ -41,7 +41,10 @@ bool Application::Init(sf::RenderWindow* window)
 	physicalWorld.Init(800, 600, 2.0f);
 	
 	// Load Textures
-	if (!texture.loadFromFile("Assets/Textures/ball.png"))
+	if (!staticBall.loadFromFile("Assets/Textures/ball.png"))
+		return false;
+
+	if (!movingBall.loadFromFile("Assets/Textures/BallFear.png"))
 		return false;
 
 	if (!roof.loadFromFile("Assets/Textures/roof1.png"))
@@ -68,7 +71,8 @@ bool Application::Init(sf::RenderWindow* window)
 	if (!about.loadFromFile("Assets/Textures/about.png"))
 		return false;
 
-	texture.setSmooth(true);
+	staticBall.setSmooth(true);
+	movingBall.setSmooth(true);
 	roof.setSmooth(true);	
 	
 	// Objects Init
@@ -76,7 +80,7 @@ bool Application::Init(sf::RenderWindow* window)
 	// Ball
 	sf::CircleShape* shape = new sf::CircleShape(30.f);
 	//shape->setFillColor(sf::Color::Red);
-	shape->setTexture(&texture);
+	shape->setTexture(&staticBall);
 	shape->setOrigin(30, 30);
 	shape->move(DRIFT + 280, 150);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("zball", shape)); // Z is just to make it the last drawn item
@@ -385,7 +389,7 @@ void Application::Update(sf::Time dt)
 	// Ball
 	if (oldRot != bodies->find("ball")->second->GetTransform().q.GetAngle() || oldPosX != bodies->find("ball")->second->GetPosition().x || oldPosY != bodies->find("ball")->second->GetPosition().y)
 	{
-		//modelObjects.find("zball")->second->setTexture(&movingBall);
+		modelObjects.find("zball")->second->setTexture(&movingBall);
 
 		oldRot = bodies->find("ball")->second->GetTransform().q.GetAngle();
 		oldPosX = bodies->find("ball")->second->GetPosition().x;
@@ -396,7 +400,7 @@ void Application::Update(sf::Time dt)
 	}
 	else
 	{
-		//modelObjects.find("ball")->second->setTexture(&staticBall);
+		modelObjects.find("zball")->second->setTexture(&staticBall);
 	}
 
 	// Beam

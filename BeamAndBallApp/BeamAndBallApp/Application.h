@@ -36,7 +36,8 @@ private:
 	std::map<std::string, bool> inFieldStatus;
 	std::map<std::string, sf::Text*> texts;
 
-	sf::Texture texture;
+	sf::Texture staticBall;
+	sf::Texture movingBall;
 	sf::Texture roof;
 	sf::Texture house;
 	sf::Texture menu;
