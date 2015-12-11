@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 16;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::None, settings);
 	sf::RenderWindow* aboutWindow = nullptr;
 	bool aboutWin = false;
 	bool graphsWin = false;
@@ -46,9 +46,12 @@ int main(int argc, char** argv)
 			if (event.type == sf::Event::Closed)
 				window.close();
 
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+				window.close();
+
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
 				// Position Field
-				if (((sf::Mouse::getPosition(window).y > 50) && (sf::Mouse::getPosition(window).y < 80)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+				if (((sf::Mouse::getPosition(window).y > 35) && (sf::Mouse::getPosition(window).y < 65)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
 					app.resetFields();
 					app.setFieldActive("des_pos");
 				}
@@ -57,7 +60,7 @@ int main(int argc, char** argv)
 				}
 
 				// Beam Length Field
-				if (((sf::Mouse::getPosition(window).y > 120) && (sf::Mouse::getPosition(window).y < 150)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+				if (((sf::Mouse::getPosition(window).y > 135) && (sf::Mouse::getPosition(window).y < 165)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
 					app.resetFields();
 					app.setFieldActive("beam_len");
 				}
@@ -66,7 +69,7 @@ int main(int argc, char** argv)
 				}
 
 				// Ball Radius Field
-				if (((sf::Mouse::getPosition(window).y > 180) && (sf::Mouse::getPosition(window).y < 210)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+				if (((sf::Mouse::getPosition(window).y > 195) && (sf::Mouse::getPosition(window).y < 225)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
 					app.resetFields();
 					app.setFieldActive("ball_rad");
 				}
@@ -74,13 +77,61 @@ int main(int argc, char** argv)
 					app.resetField("ball_rad");
 				}
 
+				// Ball Weight Field
+				if (((sf::Mouse::getPosition(window).y > 255) && (sf::Mouse::getPosition(window).y < 285)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+					app.resetFields();
+					app.setFieldActive("ball_weight");
+				}
+				else {
+					app.resetField("ball_weight");
+				}
+
+				// Servo Radius Field
+				if (((sf::Mouse::getPosition(window).y > 315) && (sf::Mouse::getPosition(window).y < 345)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+					app.resetFields();
+					app.setFieldActive("servo_rad");
+				}
+				else {
+					app.resetField("servo_rad");
+				}
+
+				// Servo Max Speed Field
+				if (((sf::Mouse::getPosition(window).y > 375) && (sf::Mouse::getPosition(window).y < 405)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+					app.resetFields();
+					app.setFieldActive("servo_speed");
+				}
+				else {
+					app.resetField("servo_speed");
+				}
+
+				// Gravitational Acceleration Field
+				if (((sf::Mouse::getPosition(window).y > 435) && (sf::Mouse::getPosition(window).y < 465)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+					app.resetFields();
+					app.setFieldActive("grav_acc");
+				}
+				else {
+					app.resetField("grav_acc");
+				}
+
 				// Send Button
-				if (((sf::Mouse::getPosition(window).y > 260) && (sf::Mouse::getPosition(window).y < 290)) && ((sf::Mouse::getPosition(window).x > 50) && (sf::Mouse::getPosition(window).x < 150))){
+				if (((sf::Mouse::getPosition(window).y > 475) && (sf::Mouse::getPosition(window).y < 505)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
 					app.resetFields();
 					app.setButtonActive("send");
 					//send();
-					//app.setTextB1("");
-					//app.setTextB2("");
+				}
+
+				// Update Button
+				if (((sf::Mouse::getPosition(window).y > 70) && (sf::Mouse::getPosition(window).y < 100)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
+					app.resetFields();
+					app.setButtonActive("update");
+					//send();
+				}
+
+				// Graphs Button
+				if (((sf::Mouse::getPosition(window).y > 515) && (sf::Mouse::getPosition(window).y < 545)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
+					app.resetFields();
+					app.setButtonActive("graphs");
+					//send();
 				}
 
 				// About Button 
