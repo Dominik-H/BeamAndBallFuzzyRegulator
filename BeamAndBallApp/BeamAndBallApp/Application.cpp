@@ -239,7 +239,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 135);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("5.0");
 	texts.insert(std::pair<std::string, sf::Text*>("beam_len", text));
 
 	// Ball Radius
@@ -248,7 +248,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 195);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("0.5");
 	texts.insert(std::pair<std::string, sf::Text*>("ball_rad", text));
 
 	// Ball Weight

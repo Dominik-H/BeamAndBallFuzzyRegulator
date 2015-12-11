@@ -127,7 +127,14 @@ int main(int argc, char** argv)
 					app.setButtonActive("update");
 					
 					std::string pos = app.getTextString("des_pos");
-					desiredPos = std::stof(pos);
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						desiredPos = 0.25;
+						app.setTextString("des_pos", "0.25");
+					}
+					else
+					{
+						desiredPos = std::stof(pos);
+					}
 
 					app.setDesiredPos(desiredPos);
 				}
