@@ -165,10 +165,15 @@ int main(int argc, char** argv)
 void DrawAbout(sf::RenderWindow* win)
 {
 	// Init About Stuff
+	sf::RectangleShape* about = new sf::RectangleShape(sf::Vector2f(400.0f, 400.0f));
+	sf::Texture aboutbg;
+	aboutbg.loadFromFile("Assets/Textures/aboutBackground.png");
+	about->setTexture(&aboutbg);
 
 	win->clear(sf::Color::Black);
-
+	
 	// Draw Stuff
+	win->draw(*about);
 
 	win->display();
 }
