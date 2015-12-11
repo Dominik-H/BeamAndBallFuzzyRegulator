@@ -152,6 +152,11 @@ int main(int argc, char** argv)
 		// Update Graphics Module - this updates all the modules
 		app.Update(clock.restart());
 		app.Draw();
+
+		if (graphsWin) {
+			// app.UpdateGraphs();
+			// app.DrawGraphs(graphsWindow);
+		}
 	}
 
 	return 0;
