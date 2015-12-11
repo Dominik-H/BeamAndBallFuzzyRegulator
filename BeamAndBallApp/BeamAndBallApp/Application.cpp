@@ -169,7 +169,7 @@ bool Application::Init(sf::RenderWindow* window)
 	buttonObjects.insert(std::pair<std::string, sf::Shape*>("about", button5));
 
 	// Texts
-	font.loadFromFile("Assets/Fonts/PINEWOOD.ttf");
+	font.loadFromFile("Assets/Fonts/RusticBlackShadow.ttf");
 	sf::Text* text;
 
 	// Desired Position Field
