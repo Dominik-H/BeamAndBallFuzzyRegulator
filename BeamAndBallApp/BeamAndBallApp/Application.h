@@ -26,6 +26,8 @@ public:
 	void setButtonActive(std::string buttonName);
 
 	bool getFieldStatus(std::string fieldName);
+
+	void setDesiredPos(float pos);
 	
 private:
 	PhysicalModel physicalWorld;
@@ -50,6 +52,8 @@ private:
 	float oldPosX;
 	float oldPosY;
 	float oldRot;
+
+	float desiredPos;
 
 	sf::Font font;
 	sf::RenderWindow* window; 

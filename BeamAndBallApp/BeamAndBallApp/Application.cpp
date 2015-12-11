@@ -7,6 +7,7 @@ Application::Application()
 	:window(0)
 {
 	totalTime = 0;
+	desiredPos = 0.25f;
 }
 
 
@@ -229,7 +230,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 35);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("0.25");
 	texts.insert(std::pair<std::string, sf::Text*>("des_pos", text));
 
 	// Beam Length
@@ -381,7 +382,7 @@ bool Application::Init(sf::RenderWindow* window)
 
 void Application::Update(sf::Time dt) 
 {
-	physicalWorld.Update(dt.asSeconds(), 0.25f);
+	physicalWorld.Update(dt.asSeconds(), desiredPos);
 	std::map<std::string, b2Body*>* bodies = physicalWorld.GetBodies();
 	
 	// Update code...
@@ -507,4 +508,9 @@ void Application::resetField(std::string fieldName)
 {
 	inFieldObjects.find(fieldName)->second->setFillColor(sf::Color(61, 44, 7));
 	inFieldStatus.find(fieldName)->second = false;
+}
+
+void Application::setDesiredPos(float pos)
+{
+	desiredPos = pos;
 }

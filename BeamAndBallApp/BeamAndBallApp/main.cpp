@@ -15,6 +15,7 @@ int main(int argc, char** argv)
 	window.setFramerateLimit(60);
 
 	BandB_Data dat;
+	float desiredPos = 0.25f;
 
 	sf::Clock clock;
 
@@ -124,7 +125,11 @@ int main(int argc, char** argv)
 				if (((sf::Mouse::getPosition(window).y > 70) && (sf::Mouse::getPosition(window).y < 100)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
 					app.resetFields();
 					app.setButtonActive("update");
-					//send();
+					
+					std::string pos = app.getTextString("des_pos");
+					desiredPos = std::stof(pos);
+
+					app.setDesiredPos(desiredPos);
 				}
 
 				// Graphs Button
