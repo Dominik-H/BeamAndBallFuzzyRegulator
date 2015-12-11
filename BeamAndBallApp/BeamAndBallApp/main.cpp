@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 16;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::None, settings);
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Close, settings);
 	sf::RenderWindow* aboutWindow = nullptr;
 	bool aboutWin = false;
 	bool graphsWin = false;
@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 					if (!aboutWin)
 					{
 						aboutWin = true;
-						aboutWindow = new sf::RenderWindow(sf::VideoMode(400, 400), "Beam & Ball App - About", sf::Style::Default);
+						aboutWindow = new sf::RenderWindow(sf::VideoMode(400, 400), "Beam & Ball App - About", sf::Style::Close);
 						DrawAbout(aboutWindow);
 					}
 				}
