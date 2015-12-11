@@ -80,6 +80,9 @@ bool Application::Init(sf::RenderWindow* window)
 	shape->setOrigin(30, 30);
 	shape->move(DRIFT + 280, 150);
 	modelObjects.insert(std::pair<std::string, sf::Shape*>("zball", shape)); // Z is just to make it the last drawn item
+	oldPosX = 28.0f / 6.0f;
+	oldPosY = 15.0f / 6.0f;
+	oldRot = 0.0f;
 
 	// Beam
 	sf::RectangleShape* beam = new sf::RectangleShape(sf::Vector2f(300.0f, 6.0f));
@@ -380,9 +383,22 @@ void Application::Update(sf::Time dt)
 	// Update code...
 
 	// Ball
-	modelObjects.find("zball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
-	modelObjects.find("zball")->second->setPosition(DRIFT + bodies->find("ball")->second->GetPosition().x * 60, window->getSize().y - bodies->find("ball")->second->GetPosition().y * 60);
-	
+	if (oldRot != bodies->find("ball")->second->GetTransform().q.GetAngle() || oldPosX != bodies->find("ball")->second->GetPosition().x || oldPosY != bodies->find("ball")->second->GetPosition().y)
+	{
+		//modelObjects.find("zball")->second->setTexture(&movingBall);
+
+		oldRot = bodies->find("ball")->second->GetTransform().q.GetAngle();
+		oldPosX = bodies->find("ball")->second->GetPosition().x;
+		oldPosY = bodies->find("ball")->second->GetPosition().y;
+
+		modelObjects.find("zball")->second->setRotation(bodies->find("ball")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
+		modelObjects.find("zball")->second->setPosition(DRIFT + bodies->find("ball")->second->GetPosition().x * 60, window->getSize().y - bodies->find("ball")->second->GetPosition().y * 60);
+	}
+	else
+	{
+		//modelObjects.find("ball")->second->setTexture(&staticBall);
+	}
+
 	// Beam
 	modelObjects.find("beam")->second->setRotation(bodies->find("beam")->second->GetTransform().q.GetAngle() * -180 / b2_pi);
 	modelObjects.find("beam")->second->setPosition(DRIFT + bodies->find("beam")->second->GetPosition().x * 60, window->getSize().y - bodies->find("beam")->second->GetPosition().y * 60);

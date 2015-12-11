@@ -46,6 +46,10 @@ private:
 	sf::Texture buttons;
 	sf::Texture about;
 
+	float oldPosX;
+	float oldPosY;
+	float oldRot;
+
 	sf::Font font;
 	sf::RenderWindow* window; 
 	int totalTime;
