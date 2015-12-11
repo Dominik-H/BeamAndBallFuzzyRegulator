@@ -257,7 +257,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 255);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("12.173672");
 	texts.insert(std::pair<std::string, sf::Text*>("ball_weight", text));
 
 	// Servo Radius
@@ -266,7 +266,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 315);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("1.0");
 	texts.insert(std::pair<std::string, sf::Text*>("servo_rad", text));
 
 	// Servo Max Speed
@@ -275,7 +275,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 375);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("2.0");
 	texts.insert(std::pair<std::string, sf::Text*>("servo_speed", text));
 
 	// Gravitational Acceleration
@@ -284,7 +284,7 @@ bool Application::Init(sf::RenderWindow* window)
 	text->setPosition(50, 435);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
-	text->setString("TESTT");
+	text->setString("9.81");
 	texts.insert(std::pair<std::string, sf::Text*>("grav_acc", text));
 
 	// Send Button
@@ -513,4 +513,76 @@ void Application::resetField(std::string fieldName)
 void Application::setDesiredPos(float pos)
 {
 	desiredPos = pos;
+}
+
+void Application::Reinit(BandB_Data &dat)
+{
+	physicalWorld.ReInit(dat);
+
+	float beamFromLeftSide = 6.55f + dat.servoRadius - dat.beamLength;
+
+	// Ball
+	delete modelObjects.find("zball")->second;
+	sf::CircleShape* shape = new sf::CircleShape(dat.ballRadius * 60.0f);
+	//shape->setFillColor(sf::Color::Red);
+	shape->setTexture(&staticBall);
+	shape->setOrigin(dat.ballRadius * 60.0f, dat.ballRadius * 60.0f);
+	shape->move(DRIFT + ((beamFromLeftSide + 0.5f) * 60.0f), (6.5f + dat.ballRadius) * 60.0f);
+	modelObjects.find("zball")->second = shape; // Z is just to make it the last drawn item
+
+	oldPosX = beamFromLeftSide + 0.5f;
+	oldPosY = 6.5f + dat.ballRadius;
+	oldRot = 0.0f;
+
+	// Beam
+	delete modelObjects.find("beam")->second;
+	sf::RectangleShape* beam = new sf::RectangleShape(sf::Vector2f(dat.beamLength * 60.0f, 6.0f));
+	beam->setFillColor(sf::Color(139, 69, 19, 255));
+	beam->setOrigin(dat.beamLength * 30.0f, 3.0f);
+	beam->move(DRIFT + (beamFromLeftSide * 30.0f), 210);
+	modelObjects.find("beam")->second = beam;
+
+	// Connnector
+	delete modelObjects.find("connector")->second;
+	sf::RectangleShape* connector = new sf::RectangleShape(sf::Vector2f(6.0f, 120.0f));
+	connector->setFillColor(sf::Color(100, 100, 100, 255));
+	connector->setOrigin(3, 60);
+	connector->move(DRIFT + beamFromLeftSide + dat.beamLength, 216);
+	modelObjects.find("connector")->second = connector;
+
+	// Triangle
+	delete modelObjects.find("triangle")->second;
+	sf::CircleShape* triangle = new sf::CircleShape(103.923f, 3);
+	//triangle->setFillColor(sf::Color::Red);
+	triangle->setTexture(&roof);
+	triangle->move(DRIFT + (beamFromLeftSide * 60.0f) - 104.0f, 216);
+	modelObjects.find("triangle")->second = triangle;
+
+	// Servo
+	delete modelObjects.find("aservo")->second;
+	sf::CircleShape* servo = new sf::CircleShape(dat.servoRadius * 60.0f);
+	servo->setFillColor(sf::Color::Yellow);
+	servo->setTexture(&tree);
+	servo->setOrigin(dat.servoRadius * 60.0f, dat.servoRadius * 60.0f);
+	servo->move(DRIFT + 330, 276);
+	modelObjects.find("aservo")->second = servo;
+
+	// Box
+	delete modelObjects.find("box")->second;
+	sf::RectangleShape* box = new sf::RectangleShape(sf::Vector2f(180.0f, 190.0f));
+	box->setTexture(&house);
+	box->move(DRIFT + (beamFromLeftSide * 60.0f) - 90.0f, 372);
+	modelObjects.find("box")->second = box;
+}
+
+void Application::UpdateGraphs()
+{
+
+}
+
+void Application::DrawGraphs(sf::RenderWindow* win)
+{
+	win->clear(sf::Color::Black);
+
+	win->display();
 }

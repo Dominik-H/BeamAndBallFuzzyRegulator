@@ -118,7 +118,68 @@ int main(int argc, char** argv)
 				if (((sf::Mouse::getPosition(window).y > 475) && (sf::Mouse::getPosition(window).y < 505)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
 					app.resetFields();
 					app.setButtonActive("send");
-					//send();
+					
+					std::string pos = app.getTextString("ball_rad");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.ballRadius = 0.5;
+						app.setTextString("ball_rad", "0.5");
+					}
+					else
+					{
+						dat.ballRadius = std::stof(pos);
+					}
+
+					pos = app.getTextString("ball_weight");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.ballWeight = 12.1736715327;
+						app.setTextString("ball_weight", "12.1736715327");
+					}
+					else
+					{
+						dat.ballWeight = std::stof(pos);
+					}
+
+					pos = app.getTextString("beam_len");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.beamLength = 5.0;
+						app.setTextString("beam_len", "5.0");
+					}
+					else
+					{
+						dat.beamLength = std::stof(pos);
+					}
+
+					pos = app.getTextString("servo_rad");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.servoRadius = 1.0;
+						app.setTextString("servo_rad", "1.0");
+					}
+					else
+					{
+						dat.servoRadius = std::stof(pos);
+					}
+
+					pos = app.getTextString("servo_speed");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.servoMaxSpeed = 2.0;
+						app.setTextString("servo_speed", "2.0");
+					}
+					else
+					{
+						dat.servoMaxSpeed = std::stof(pos);
+					}
+
+					pos = app.getTextString("grav_acc");
+					if (pos.empty() || pos[0] == '.' || std::count(pos.begin(), pos.end(), '.') > 1) {
+						dat.gravitationalAcceleration = 9.81;
+						app.setTextString("grav_acc", "9.81");
+					}
+					else
+					{
+						dat.gravitationalAcceleration = std::stof(pos);
+					}
+
+					app.Reinit(dat);
 				}
 
 				// Update Button
@@ -143,7 +204,11 @@ int main(int argc, char** argv)
 				if (((sf::Mouse::getPosition(window).y > 515) && (sf::Mouse::getPosition(window).y < 545)) && ((sf::Mouse::getPosition(window).x > 30) && (sf::Mouse::getPosition(window).x < 170))){
 					app.resetFields();
 					app.setButtonActive("graphs");
-					//send();
+					if (!graphsWin)
+					{
+						graphsWin = true;
+						graphsWindow = new sf::RenderWindow(sf::VideoMode(800, 600), "Beam & Ball App - Graphs", sf::Style::Close);
+					}
 				}
 
 				// About Button 
@@ -211,6 +276,70 @@ int main(int argc, char** argv)
 						app.setTextString("ball_rad", nameB4);
 					}
 				}
+
+				if (app.getFieldStatus("ball_weight")){
+					if (((event.text.unicode <= 59 && event.text.unicode >= 48) || (event.text.unicode == 46) || (event.text.unicode == 8)))
+					{
+						std::string nameB4 = app.getTextString("ball_weight");
+
+						if (event.text.unicode == 8) { // backspace
+							if (nameB4.size() > 0) nameB4.resize(nameB4.size() - 1);
+						}
+						else {
+							if (nameB4.size() < 7)
+								nameB4 += static_cast<char>(event.text.unicode);
+						}
+						app.setTextString("ball_weight", nameB4);
+					}
+				}
+
+				if (app.getFieldStatus("servo_rad")){
+					if (((event.text.unicode <= 59 && event.text.unicode >= 48) || (event.text.unicode == 46) || (event.text.unicode == 8)))
+					{
+						std::string nameB4 = app.getTextString("servo_rad");
+
+						if (event.text.unicode == 8) { // backspace
+							if (nameB4.size() > 0) nameB4.resize(nameB4.size() - 1);
+						}
+						else {
+							if (nameB4.size() < 7)
+								nameB4 += static_cast<char>(event.text.unicode);
+						}
+						app.setTextString("servo_rad", nameB4);
+					}
+				}
+
+				if (app.getFieldStatus("servo_speed")){
+					if (((event.text.unicode <= 59 && event.text.unicode >= 48) || (event.text.unicode == 46) || (event.text.unicode == 8)))
+					{
+						std::string nameB4 = app.getTextString("servo_speed");
+
+						if (event.text.unicode == 8) { // backspace
+							if (nameB4.size() > 0) nameB4.resize(nameB4.size() - 1);
+						}
+						else {
+							if (nameB4.size() < 7)
+								nameB4 += static_cast<char>(event.text.unicode);
+						}
+						app.setTextString("servo_speed", nameB4);
+					}
+				}
+
+				if (app.getFieldStatus("grav_acc")){
+					if (((event.text.unicode <= 59 && event.text.unicode >= 48) || (event.text.unicode == 46) || (event.text.unicode == 8)))
+					{
+						std::string nameB4 = app.getTextString("grav_acc");
+
+						if (event.text.unicode == 8) { // backspace
+							if (nameB4.size() > 0) nameB4.resize(nameB4.size() - 1);
+						}
+						else {
+							if (nameB4.size() < 7)
+								nameB4 += static_cast<char>(event.text.unicode);
+						}
+						app.setTextString("grav_acc", nameB4);
+					}
+				}
 			}
 		}
 
@@ -220,8 +349,8 @@ int main(int argc, char** argv)
 		app.Draw();
 
 		if (graphsWin) {
-			// app.UpdateGraphs();
-			// app.DrawGraphs(graphsWindow);
+			app.UpdateGraphs();
+			app.DrawGraphs(graphsWindow);
 		}
 	}
 

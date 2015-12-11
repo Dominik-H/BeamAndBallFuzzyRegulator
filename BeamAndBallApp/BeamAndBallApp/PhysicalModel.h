@@ -11,8 +11,7 @@ public:
 
 	bool Init(int width, int height, float servoTimeDelay);
 	void Update(float dt, float desiredPos);
-	void SetServoTimeDelay(float servoTimeDelay);
-	void SetGravity(float gravityAcceleration);
+	bool ReInit(BandB_Data &dat);
 
 	std::map<std::string, b2Body*>* GetBodies() {
 		return &bAndBBodies;
@@ -23,7 +22,6 @@ public:
 	}
 
 private:
-	bool ReInit();
 
 	FuzzyRegulator regulator;
 	float oldDiff;
@@ -33,6 +31,8 @@ private:
 	bool initialized;
 	std::vector<b2Body*> walls;
 	std::map<std::string, b2Body*> bAndBBodies;
+	float beamLength;
+	float beamFromLeftSide;
 
 	// Joint pointers for cleanup...
 	b2RevoluteJoint* joint1;

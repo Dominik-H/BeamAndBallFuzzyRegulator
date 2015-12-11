@@ -11,6 +11,7 @@ public:
 		ballWeight = 12.1736715327f;
 		servoRadius = 1.0f;
 		servoMaxSpeed = 2.0f;
+		gravitationalAcceleration = 9.81f;
 	}
 
 	float beamLength;
