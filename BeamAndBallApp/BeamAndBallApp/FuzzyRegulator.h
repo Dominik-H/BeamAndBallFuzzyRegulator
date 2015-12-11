@@ -5,6 +5,14 @@
 struct BandB_Data
 {
 public:
+	BandB_Data() {
+		beamLength = 5.0f;
+		ballRadius = 0.5f;
+		ballWeight = 12.1736715327f;
+		servoRadius = 1.0f;
+		servoMaxSpeed = 2.0f;
+	}
+
 	float beamLength;
 
 	float ballRadius;

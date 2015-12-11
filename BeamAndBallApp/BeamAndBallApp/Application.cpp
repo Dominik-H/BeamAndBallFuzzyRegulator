@@ -134,7 +134,7 @@ bool Application::Init(sf::RenderWindow* window)
 	sf::RectangleShape* button1 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
 	button1->setFillColor(sf::Color(61, 44, 7));
 	button1->setTexture(&buttons);
-	button1->move(50,50);
+	button1->move(50, 35);
 	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("des_pos", button1));
 	inFieldStatus.insert(std::pair<std::string, bool>("des_pos", false));
 
@@ -142,7 +142,7 @@ bool Application::Init(sf::RenderWindow* window)
 	sf::RectangleShape* button2 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
 	button2->setFillColor(sf::Color(61, 44, 7));
 	button2->setTexture(&buttons);
-	button2->move(50, 120);
+	button2->move(50, 135);
 	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("beam_len", button2));
 	inFieldStatus.insert(std::pair<std::string, bool>("beam_len", false));
 
@@ -150,16 +150,60 @@ bool Application::Init(sf::RenderWindow* window)
 	sf::RectangleShape* button4 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
 	button4->setFillColor(sf::Color(61, 44, 7));
 	button4->setTexture(&buttons);
-	button4->move(50, 180);
+	button4->move(50, 195);
 	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("ball_rad", button4));
 	inFieldStatus.insert(std::pair<std::string, bool>("ball_rad", false));
+
+	// Ball Weight
+	button4 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button4->setFillColor(sf::Color(61, 44, 7));
+	button4->setTexture(&buttons);
+	button4->move(50, 255);
+	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("ball_weight", button4));
+	inFieldStatus.insert(std::pair<std::string, bool>("ball_weight", false));
+
+	// Servo Radius
+	button4 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button4->setFillColor(sf::Color(61, 44, 7));
+	button4->setTexture(&buttons);
+	button4->move(50, 315);
+	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("servo_rad", button4));
+	inFieldStatus.insert(std::pair<std::string, bool>("servo_rad", false));
+
+	// Servo Max Speed
+	button4 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button4->setFillColor(sf::Color(61, 44, 7));
+	button4->setTexture(&buttons);
+	button4->move(50, 375);
+	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("servo_speed", button4));
+	inFieldStatus.insert(std::pair<std::string, bool>("servo_speed", false));
+
+	// Gravitational Acceleration
+	button4 = new sf::RectangleShape(sf::Vector2f(100.0f, 30.0f));
+	button4->setFillColor(sf::Color(61, 44, 7));
+	button4->setTexture(&buttons);
+	button4->move(50, 435);
+	inFieldObjects.insert(std::pair<std::string, sf::Shape*>("grav_acc", button4));
+	inFieldStatus.insert(std::pair<std::string, bool>("grav_acc", false));
 	
 	// Buttons
 
-	// Send Button
-	sf::RectangleShape* button3 = new sf::RectangleShape(sf::Vector2f(100.0f, 40.0f));
+	// Update Button
+	sf::RectangleShape* button3 = new sf::RectangleShape(sf::Vector2f(140.0f, 40.0f));
 	button3->setTexture(&button);
-	button3->move(50, 260);
+	button3->move(30, 70);
+	buttonObjects.insert(std::pair<std::string, sf::Shape*>("update", button3));
+
+	// Show Graphs Button
+	button3 = new sf::RectangleShape(sf::Vector2f(140.0f, 40.0f));
+	button3->setTexture(&button);
+	button3->move(30, 515);
+	buttonObjects.insert(std::pair<std::string, sf::Shape*>("graphs", button3));
+
+	// Send Button
+	button3 = new sf::RectangleShape(sf::Vector2f(140.0f, 40.0f));
+	button3->setTexture(&button);
+	button3->move(30, 475);
 	buttonObjects.insert(std::pair<std::string, sf::Shape*>("send", button3));
 
 	// About Button
@@ -175,49 +219,106 @@ bool Application::Init(sf::RenderWindow* window)
 	// Desired Position Field
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(50, 50);
+	text->setPosition(50, 35);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
+	text->setString("TESTT");
 	texts.insert(std::pair<std::string, sf::Text*>("des_pos", text));
 
 	// Beam Length
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(50, 120);
+	text->setPosition(50, 135);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
+	text->setString("TESTT");
 	texts.insert(std::pair<std::string, sf::Text*>("beam_len", text));
 
 	// Ball Radius
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(50, 180);
+	text->setPosition(50, 195);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(24);
+	text->setString("TESTT");
 	texts.insert(std::pair<std::string, sf::Text*>("ball_rad", text));
+
+	// Ball Weight
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(50, 255);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(24);
+	text->setString("TESTT");
+	texts.insert(std::pair<std::string, sf::Text*>("ball_weight", text));
+
+	// Servo Radius
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(50, 315);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(24);
+	text->setString("TESTT");
+	texts.insert(std::pair<std::string, sf::Text*>("servo_rad", text));
+
+	// Servo Max Speed
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(50, 375);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(24);
+	text->setString("TESTT");
+	texts.insert(std::pair<std::string, sf::Text*>("servo_speed", text));
+
+	// Gravitational Acceleration
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(50, 435);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(24);
+	text->setString("TESTT");
+	texts.insert(std::pair<std::string, sf::Text*>("grav_acc", text));
 
 	// Send Button
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(72, 260);
+	text->setPosition(70, 475);
 	text->setColor(sf::Color::Black);
 	text->setCharacterSize(24);
 	text->setString("SEND");
 	texts.insert(std::pair<std::string, sf::Text*>("send", text));
 
+	// Update Button
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(55, 70);
+	text->setColor(sf::Color::Black);
+	text->setCharacterSize(24);
+	text->setString("UPDATE");
+	texts.insert(std::pair<std::string, sf::Text*>("update", text));
+
+	// Graphs Button
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(55, 515);
+	text->setColor(sf::Color::Black);
+	text->setCharacterSize(24);
+	text->setString("GRAPHS");
+	texts.insert(std::pair<std::string, sf::Text*>("graphs", text));
+
 	// Desired Position Title
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(30, 20);
+	text->setPosition(2, 10);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(16);
-	text->setString("Desired Ball Position in m");
+	text->setString("Desired Ball Position");
 	texts.insert(std::pair<std::string, sf::Text*>("des_pos_title", text));
 
 	// Beam Length Title
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(30, 90);
+	text->setPosition(25, 110);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(16);
 	text->setString("Beam length in m");
@@ -226,11 +327,47 @@ bool Application::Init(sf::RenderWindow* window)
 	// Ball Radius Title
 	text = new sf::Text();
 	text->setFont(font);
-	text->setPosition(40, 160);
+	text->setPosition(25, 170);
 	text->setColor(sf::Color::White);
 	text->setCharacterSize(16);
 	text->setString("Ball Radius in m");
 	texts.insert(std::pair<std::string, sf::Text*>("ball_rad_title", text));
+
+	// Ball Weight Title
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(20, 230);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(16);
+	text->setString("Ball Weight in kg");
+	texts.insert(std::pair<std::string, sf::Text*>("ball_weight_title", text));
+
+	// Servo Radius Title
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(25, 290);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(16);
+	text->setString("Servo Radius in m");
+	texts.insert(std::pair<std::string, sf::Text*>("servo_rad_title", text));
+
+	// Servo Speed Title
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(2, 350);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(14);
+	text->setString("Servo Speed in rad per s");
+	texts.insert(std::pair<std::string, sf::Text*>("servo_speed_title", text));
+
+	// Gravity Title
+	text = new sf::Text();
+	text->setFont(font);
+	text->setPosition(20, 410);
+	text->setColor(sf::Color::White);
+	text->setCharacterSize(16);
+	text->setString("Gravitational Acc.");
+	texts.insert(std::pair<std::string, sf::Text*>("grav_acc_title", text));
 
 	return true;
 }

@@ -87,9 +87,12 @@ int main(int argc, char** argv)
 				if (((sf::Mouse::getPosition(window).y > 550) && (sf::Mouse::getPosition(window).y < 590)) && ((sf::Mouse::getPosition(window).x > 10) && (sf::Mouse::getPosition(window).x < 50))){
 					app.resetFields();
 					app.setButtonActive("about");
-					aboutWin = true;
-					aboutWindow = new sf::RenderWindow(sf::VideoMode(400, 400), "Beam & Ball App - About", sf::Style::Default);
-					DrawAbout(aboutWindow);
+					if (!aboutWin)
+					{
+						aboutWin = true;
+						aboutWindow = new sf::RenderWindow(sf::VideoMode(400, 400), "Beam & Ball App - About", sf::Style::Default);
+						DrawAbout(aboutWindow);
+					}
 				}
 			}
 			else {
