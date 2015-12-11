@@ -1,12 +1,20 @@
 #include "pch.h"
 #include "Application.h"
 
+void DrawAbout(sf::RenderWindow* win);
+
 int main(int argc, char** argv)
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 16;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Beam & Ball App", sf::Style::Default, settings);
+	sf::RenderWindow* aboutWindow = nullptr;
+	bool aboutWin = false;
+	bool graphsWin = false;
+	sf::RenderWindow* graphsWindow = nullptr;
 	window.setFramerateLimit(60);
+
+	BandB_Data dat;
 
 	sf::Clock clock;
 
@@ -17,6 +25,22 @@ int main(int argc, char** argv)
 	while (window.isOpen())
 	{
 		sf::Event event;
+		if (aboutWin) {
+			aboutWindow->pollEvent(event);
+			if (event.type == sf::Event::Closed) {
+				aboutWindow->close();
+				aboutWin = false;
+			}
+		}
+
+		if (graphsWin) {
+			graphsWindow->pollEvent(event);
+			if (event.type == sf::Event::Closed) {
+				graphsWindow->close();
+				graphsWin = false;
+			}
+		}
+
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -63,9 +87,9 @@ int main(int argc, char** argv)
 				if (((sf::Mouse::getPosition(window).y > 550) && (sf::Mouse::getPosition(window).y < 590)) && ((sf::Mouse::getPosition(window).x > 10) && (sf::Mouse::getPosition(window).x < 50))){
 					app.resetFields();
 					app.setButtonActive("about");
-					//send();
-					//app.setTextB1("");
-					//app.setTextB2("");
+					aboutWin = true;
+					aboutWindow = new sf::RenderWindow(sf::VideoMode(400, 400), "Beam & Ball App - About", sf::Style::Default);
+					DrawAbout(aboutWindow);
 				}
 			}
 			else {
@@ -131,4 +155,15 @@ int main(int argc, char** argv)
 	}
 
 	return 0;
+}
+
+void DrawAbout(sf::RenderWindow* win)
+{
+	// Init About Stuff
+
+	win->clear(sf::Color::Black);
+
+	// Draw Stuff
+
+	win->display();
 }
