@@ -10,8 +10,11 @@ public:
 	~Application();
 
 	bool Init(sf::RenderWindow* window);
+	void Reinit(BandB_Data &dat);
 	void Update(sf::Time dt);
 	void Draw();
+	void DrawGraphs(sf::RenderWindow* win);
+	void resetGraphs();
 
 	std::string getTextString(std::string textFieldName);
 	void setTextString(std::string textFieldName, std::string text);
@@ -26,6 +29,8 @@ public:
 	void setButtonActive(std::string buttonName);
 
 	bool getFieldStatus(std::string fieldName);
+
+	void setDesiredPos(float pos);
 	
 private:
 	PhysicalModel physicalWorld;
@@ -36,7 +41,8 @@ private:
 	std::map<std::string, bool> inFieldStatus;
 	std::map<std::string, sf::Text*> texts;
 
-	sf::Texture texture;
+	sf::Texture staticBall;
+	sf::Texture movingBall;
 	sf::Texture roof;
 	sf::Texture house;
 	sf::Texture menu;
@@ -45,6 +51,12 @@ private:
 	sf::Texture button;
 	sf::Texture buttons;
 	sf::Texture about;
+
+	float oldPosX;
+	float oldPosY;
+	float oldRot;
+
+	float desiredPos;
 
 	sf::Font font;
 	sf::RenderWindow* window; 
