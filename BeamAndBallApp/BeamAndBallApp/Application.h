@@ -13,8 +13,8 @@ public:
 	void Reinit(BandB_Data &dat);
 	void Update(sf::Time dt);
 	void Draw();
-	void UpdateGraphs();
 	void DrawGraphs(sf::RenderWindow* win);
+	void resetGraphs();
 
 	std::string getTextString(std::string textFieldName);
 	void setTextString(std::string textFieldName, std::string text);

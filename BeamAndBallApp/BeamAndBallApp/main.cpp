@@ -208,6 +208,7 @@ int main(int argc, char** argv)
 					{
 						graphsWin = true;
 						graphsWindow = new sf::RenderWindow(sf::VideoMode(800, 500), "Beam & Ball App - Graphs", sf::Style::Close);
+						app.resetGraphs();
 					}
 				}
 
@@ -349,7 +350,6 @@ int main(int argc, char** argv)
 		app.Draw();
 
 		if (graphsWin) {
-			app.UpdateGraphs();
 			app.DrawGraphs(graphsWindow);
 		}
 	}

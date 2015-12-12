@@ -7,6 +7,7 @@ PhysicalModel::PhysicalModel()
 {
 	beamLength = 5.0f;
 	beamFromLeftSide = 2.5f;
+	totalTime = 0.0f;
 }
 
 
@@ -37,6 +38,10 @@ void BeginContact(b2Contact* contact)
 
 bool PhysicalModel::Init(int width, int height, float servoTimeDelay)
 {
+	graphTimes.push_back(0.0f);
+	positionOverTime.push_back(0.0f);
+	outputOverTime.push_back(0.0f);
+
 	regulator.Init();
 
 	gravity.Set(0.0f, -9.81f); 
@@ -226,9 +231,15 @@ void PhysicalModel::Update(float dt, float desiredPos)
 	int32 velocityIterations = 10;
 	int32 positionIterations = 8;
 
+	totalTime += dt;
+
 	float odchylka = ((bAndBBodies.find("ball")->second->GetPosition().x - beamFromLeftSide) - desiredPos) / beamLength;
 	float desiredAngle = regulator.getAngle(odchylka, oldDiff-odchylka) * (b2_pi/2);
 	oldDiff = odchylka;
+
+	graphTimes.push_back(totalTime);
+	positionOverTime.push_back(bAndBBodies.find("ball")->second->GetPosition().x - beamFromLeftSide);
+	outputOverTime.push_back(desiredAngle);
 
 	float actualAngle = bAndBBodies.find("servo")->second->GetAngle();
 
@@ -256,6 +267,16 @@ void PhysicalModel::Update(float dt, float desiredPos)
 
 bool PhysicalModel::ReInit(BandB_Data &dat)
 {
+	totalTime = 0.0f;
+
+	graphTimes.clear();
+	positionOverTime.clear();
+	outputOverTime.clear();
+
+	graphTimes.push_back(0.0f);
+	positionOverTime.push_back(0.0f);
+	outputOverTime.push_back(0.0f);
+
 	// Delete Joints
 	world->DestroyJoint(joint1);
 	world->DestroyJoint(joint2);
@@ -451,4 +472,222 @@ bool PhysicalModel::ReInit(BandB_Data &dat)
 	oldDiff = 0.0f;
 
 	return true;
+}
+
+void PhysicalModel::DrawGraphs(sf::RenderWindow* win)
+{
+	// Outlines
+	sf::Vertex axisX1[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 200.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(50.0f, 50.0f), sf::Color::Red)
+	};
+
+	sf::Vertex axisY1[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 200.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(795.0f, 200.0f), sf::Color::Red)
+	};
+
+	sf::Vertex axisX2[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 450.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(50.0f, 300.0f), sf::Color::Blue)
+	};
+
+	sf::Vertex axisY2[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 450.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(795.0f, 450.0f), sf::Color::Blue)
+	};
+
+	sf::Vertex LAX1[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 50.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(37.0f, 75.0f), sf::Color::Red)
+	};
+
+	sf::Vertex RAX1[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 50.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(63.0f, 75.0f), sf::Color::Red)
+	};
+
+	sf::Vertex LAY1[] = {
+		sf::Vertex(sf::Vector2f(795.0f, 200.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(770.0f, 187.0f), sf::Color::Red)
+	};
+
+	sf::Vertex RAY1[] = {
+		sf::Vertex(sf::Vector2f(795.0f, 200.0f), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(770.0f, 213.0f), sf::Color::Red)
+	};
+
+	sf::Vertex LAX2[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 300.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(37.0f, 325.0f), sf::Color::Blue)
+	};
+
+	sf::Vertex RAX2[] = {
+		sf::Vertex(sf::Vector2f(50.0f, 300.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(63.0f, 325.0f), sf::Color::Blue)
+	};
+
+	sf::Vertex LAY2[] = {
+		sf::Vertex(sf::Vector2f(795.0f, 450.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(770.0f, 437.0f), sf::Color::Blue)
+	};
+
+	sf::Vertex RAY2[] = {
+		sf::Vertex(sf::Vector2f(795.0f, 450.0f), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(770.0f, 463.0f), sf::Color::Blue)
+	};
+
+	sf::Text positionTitle;
+	sf::Text positionY;
+	sf::Text timeX;
+	sf::Text outputTitle;
+	sf::Text outputY;
+	sf::Font font;
+
+	sf::Text minPos;
+	sf::Text maxPos;
+	sf::Text minAngle;
+	sf::Text maxAngle;
+
+	font.loadFromFile("Assets/Fonts/RusticBlackShadow.ttf");
+
+	minPos.setString("0");
+	minPos.setColor(sf::Color::Red);
+	minPos.setCharacterSize(20);
+	minPos.setPosition(sf::Vector2f(5.0f, 190.0f));
+	minPos.setFont(font);
+	
+	std::string str = std::to_string(beamLength);
+	str.resize(str.find_first_of('.') + 2);
+	maxPos.setString(str);
+	maxPos.setColor(sf::Color::Red);
+	maxPos.setCharacterSize(20);
+	maxPos.setPosition(sf::Vector2f(5.0f, 25.0f));
+	maxPos.setFont(font);
+	
+	maxAngle.setString("90");
+	maxAngle.setColor(sf::Color::Blue);
+	maxAngle.setCharacterSize(20);
+	maxAngle.setPosition(sf::Vector2f(5.0f, 285.0f));
+	maxAngle.setFont(font);
+	
+	minAngle.setString("n90");
+	minAngle.setColor(sf::Color::Blue);
+	minAngle.setCharacterSize(20);
+	minAngle.setPosition(sf::Vector2f(4.0f, 430.0f));
+	minAngle.setFont(font);
+
+	positionTitle.setString("Ball Position Over Time");
+	positionTitle.setColor(sf::Color::Red);
+	positionTitle.setFont(font);
+	positionTitle.setCharacterSize(20);
+	positionTitle.setPosition(sf::Vector2f(250.0f, 5.0f));
+
+	positionY.setString("Position");
+	positionY.setRotation(-90);
+	positionY.setColor(sf::Color::Red);
+	positionY.setCharacterSize(20);
+	positionY.setPosition(sf::Vector2f(5.0f, 170.0f));
+	positionY.setFont(font);
+
+	outputY.setString("Output");
+	outputY.setRotation(-90);
+	outputY.setColor(sf::Color::Blue);
+	outputY.setCharacterSize(20);
+	outputY.setPosition(sf::Vector2f(5.0f, 415.0f));
+	outputY.setFont(font);
+
+	outputTitle.setString("Regulator Output Over Time");
+	outputTitle.setColor(sf::Color::Blue);
+	outputTitle.setCharacterSize(20);
+	outputTitle.setPosition(sf::Vector2f(230.0f, 255.0f));
+	outputTitle.setFont(font);
+
+	timeX.setString("Time");
+	timeX.setColor(sf::Color::Red);
+	timeX.setCharacterSize(20);
+	timeX.setPosition(sf::Vector2f(370.0f, 205.0f));
+	timeX.setFont(font);
+
+	win->draw(positionTitle);
+	win->draw(outputTitle);
+	win->draw(outputY);
+	win->draw(positionY);
+	win->draw(timeX);
+	win->draw(minPos);
+	win->draw(maxPos);
+	win->draw(minAngle);
+	win->draw(maxAngle);
+
+	timeX.setColor(sf::Color::Blue);
+	timeX.setPosition(sf::Vector2f(370.0f, 455.0f));
+
+	win->draw(timeX);
+
+	win->draw(axisX1, 2, sf::Lines);
+	win->draw(axisY1, 2, sf::Lines);
+	win->draw(axisX2, 2, sf::Lines);
+	win->draw(axisY2, 2, sf::Lines);
+
+	win->draw(LAX1, 2, sf::Lines);
+	win->draw(RAX1, 2, sf::Lines);
+	win->draw(LAY1, 2, sf::Lines);
+	win->draw(RAY1, 2, sf::Lines);
+	win->draw(LAX2, 2, sf::Lines);
+	win->draw(RAX2, 2, sf::Lines);
+	win->draw(LAY2, 2, sf::Lines);
+	win->draw(RAY2, 2, sf::Lines);
+
+
+	// Actual Graphs
+	struct HelperVert {
+		sf::Vertex arr[2];
+	};
+
+	std::vector<HelperVert> positionLines;
+	std::vector<HelperVert> outputLines;
+
+	for (uint32 i = 0; i < graphTimes.size() - 1; ++i) {
+		sf::Vertex pos[2] = {
+			sf::Vertex(sf::Vector2f(50 + (graphTimes[i] * (745 / graphTimes[graphTimes.size() - 1])), 
+									50 + (150 - (positionOverTime[i] * (150 / beamLength)))), sf::Color::Red),
+			sf::Vertex(sf::Vector2f(((i + 1) == graphTimes.size()) ? 795 : (50 + (graphTimes[i+1] * (745 / graphTimes[graphTimes.size() - 1]))), 
+									50 + (150 - (positionOverTime[i + 1] * (150 / beamLength)))), sf::Color::Red)
+		};
+
+		sf::Vertex out[2] = {
+			sf::Vertex(sf::Vector2f(50 + (graphTimes[i] * (745 / graphTimes[graphTimes.size() - 1])), 
+									300 + (75 - (((90 * outputOverTime[i])) * (150.0f / 220.0f)))), sf::Color::Blue),
+			sf::Vertex(sf::Vector2f(((i + 1) == graphTimes.size()) ? 795 : (50 + (graphTimes[i + 1] * (745 / graphTimes[graphTimes.size() - 1]))), 
+									300 + (75 - (((90 * outputOverTime[i + 1])) * (150.0f / 220.0f)))), sf::Color::Blue)
+		};
+
+		HelperVert p;
+		HelperVert o;
+		p.arr[0] = pos[0];
+		p.arr[1] = pos[1];
+		o.arr[0] = out[0];
+		o.arr[1] = out[1];
+
+		positionLines.push_back(p);
+		outputLines.push_back(o);
+	}
+
+	for(uint32 i = 0; i < positionLines.size(); ++i) {
+		win->draw(positionLines[i].arr, 2, sf::Lines);
+		win->draw(outputLines[i].arr, 2, sf::Lines);
+	}
+}
+
+void PhysicalModel::resetGraphs()
+{
+	totalTime = 0.0f;
+
+	graphTimes.clear();
+	positionOverTime.clear();
+	outputOverTime.clear();
+
+	graphTimes.push_back(0.0f);
+	positionOverTime.push_back(0.0f);
+	outputOverTime.push_back(0.0f);
 }

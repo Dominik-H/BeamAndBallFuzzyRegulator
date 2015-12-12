@@ -12,6 +12,8 @@ public:
 	bool Init(int width, int height, float servoTimeDelay);
 	void Update(float dt, float desiredPos);
 	bool ReInit(BandB_Data &dat);
+	void DrawGraphs(sf::RenderWindow* win);
+	void resetGraphs();
 
 	std::map<std::string, b2Body*>* GetBodies() {
 		return &bAndBBodies;
@@ -33,6 +35,12 @@ private:
 	std::map<std::string, b2Body*> bAndBBodies;
 	float beamLength;
 	float beamFromLeftSide;
+
+	std::vector<float> graphTimes;
+	std::vector<float> positionOverTime;
+	std::vector<float> outputOverTime;
+
+	float totalTime;
 
 	// Joint pointers for cleanup...
 	b2RevoluteJoint* joint1;

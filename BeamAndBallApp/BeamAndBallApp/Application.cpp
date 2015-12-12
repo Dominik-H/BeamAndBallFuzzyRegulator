@@ -576,14 +576,16 @@ void Application::Reinit(BandB_Data &dat)
 	modelObjects.find("box")->second = box;
 }
 
-void Application::UpdateGraphs()
-{
-
-}
-
 void Application::DrawGraphs(sf::RenderWindow* win)
 {
 	win->clear(sf::Color::Black);
 
+	physicalWorld.DrawGraphs(win);
+
 	win->display();
+}
+
+void Application::resetGraphs()
+{
+	physicalWorld.resetGraphs();
 }
