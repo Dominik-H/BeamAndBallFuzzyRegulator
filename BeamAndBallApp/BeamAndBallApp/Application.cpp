@@ -388,7 +388,7 @@ void Application::Update(sf::Time dt)
 	// Update code...
 
 	// Ball
-	if ((abs(oldRot - bodies->find("ball")->second->GetTransform().q.GetAngle()) <= 1e-3) || (abs(oldPosX - bodies->find("ball")->second->GetPosition().x) <= 1e-3) || (abs(oldPosY - bodies->find("ball")->second->GetPosition().y) <= 1e-3))
+	if ((abs(oldRot - bodies->find("ball")->second->GetTransform().q.GetAngle()) >= 1e-2) || (abs(oldPosX - bodies->find("ball")->second->GetPosition().x) >= 1e-3) || (abs(oldPosY - bodies->find("ball")->second->GetPosition().y) >= 1e-3))
 	{
 		modelObjects.find("zball")->second->setTexture(&movingBall);
 
